@@ -1,6 +1,9 @@
 <script setup>
 import { useAuthStore } from '@/plugins/auth';
 import avatar1 from '@images/avatars/avatar-1.png';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 const authStore = useAuthStore()
 
 // Function to handle logout
