@@ -1,35 +1,45 @@
-# vue
+# Sneat Vue 3
 
-This template should help get you started developing with Vue 3 in Vite.
+Shout out to **[ThemeSelection](https://themeselection.com/)** and Sneat developer for this template. 
 
-## Recommended IDE Setup
+I am Hafiz Ruslan, really appreciate to use this awesome free content. TBH I avoid TypeScript version like a plague and you guys created this Javascript version which I will gladly utilize this as much as I can and thank you for contributing. 
 
-[VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates.
-
-However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can run `Volar: Switch TS Plugin on/off` from VS Code command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+I love you guys.
 
 ## Project Setup
+This template should help get you started developing with Vue 3 in Vite. 
 
+This project however use pnpm instead of npm and latest version of Node LTS (^18.21).
 ```sh
-npm install
+npm install -g pnpm
+```
+
+### Copy and setup .env
+```sh
+cp .env.example .env
+```
+
+### Install all Packages
+```sh
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+pnpm build
 ```
+
+```sh
+pnpm preview
+```
+
+## Reference
+
+Go visit this **[Sneat Documentation](https://demos.themeselection.com/sneat-vuetify-vuejs-admin-template/documentation/guide/installation.html)** site to learn more.
