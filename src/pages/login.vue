@@ -3,6 +3,12 @@ import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
 import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?url'
 import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?url'
+import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/plugins/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
 
 const form = ref({
   email: '',
@@ -11,6 +17,24 @@ const form = ref({
 })
 
 const isPasswordVisible = ref(false)
+
+// Function to handle login
+const loginUser = async () => {
+
+  const success = await authStore.login(form.value.email, form.value.password, form.value.remember)
+
+  if (success) {
+    router.push('/') // Redirect on successful login
+  } else {
+    console.error('Login failed')
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Login failed!",
+    });
+  }
+}
+
 </script>
 
 <template>
@@ -43,7 +67,8 @@ const isPasswordVisible = ref(false)
             <div
               class="d-flex"
               v-html="logo"
-            />
+            >
+            </div>
             <h1 class="app-logo-title">
               sneat
             </h1>
@@ -60,7 +85,7 @@ const isPasswordVisible = ref(false)
         </VCardText>
 
         <VCardText>
-          <VForm @submit.prevent="$router.push('/')">
+          <VForm @submit.prevent="loginUser">
             <VRow>
               <!-- email -->
               <VCol cols="12">

@@ -1,5 +1,18 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import { useAuthStore } from '@/plugins/auth';
+import avatar1 from '@images/avatars/avatar-1.png';
+const authStore = useAuthStore()
+
+// Function to handle logout
+const logout = async () => {
+
+  const success = await authStore.logout()
+  if (success) {
+    router.push('/login') // Redirect on successful login
+  } else {
+    console.error('Logout failed')
+  }
+}
 </script>
 
 <template>
@@ -110,7 +123,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"
