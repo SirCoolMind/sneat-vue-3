@@ -22,6 +22,20 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     />
   </VerticalNavGroup>
 
+  <VerticalNavSectionTitle
+    :item="{
+      heading: 'Apps',
+    }"
+  />
+
+  <VerticalNavLink
+    :item="{
+      title: 'KPOP Collection',
+      icon: 'bx-collection',
+      to: '/kpop-collection',
+    }"
+  />
+
   <!-- 👉 Apps & Pages -->
   <VerticalNavLink
     :item="{
