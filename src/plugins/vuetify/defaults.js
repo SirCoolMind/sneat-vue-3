@@ -144,6 +144,7 @@ export default {
     density: 'comfortable',
     color: 'primary',
     hideDetails: 'auto',
+    persistentPlaceholder: 'true',
   },
   VAutocomplete: {
     variant: 'outlined',
