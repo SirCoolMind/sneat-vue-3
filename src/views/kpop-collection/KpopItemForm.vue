@@ -1,8 +1,11 @@
 <script setup>
+import ImageUpload from '@/components/ImageUpload.vue';
 import { getValue } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+// Data related function
+const errorMessages = ref({})
 const form = ref({
   artist_name : '',
   era_name : '',
@@ -13,33 +16,33 @@ const form = ref({
   bought_price : '',
   bought_place : '',
   bought_comment : '',
+  photocard_image : [],
 })
 
-const errorMessages = ref({})
 
-// Function to handle login
 const saveData = async () => {
-
   try {
-    errorMessages.value = {}
-    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`, form.value)
-
-    console.log(response)
-
-    Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "Record saved!",
+    const formData = new FormData();
+    Object.entries(form.value).forEach(([key, value]) => {
+      if (!['photocard_image'].includes(key)) { // Skip the image field for now
+        formData.append(key, value);
+      }
     });
+    if (form.value.photocard_image.length > 0) {
+      formData.append('photocard_image', form.value.photocard_image[0]); // Append the first image file
+    }
+
+    errorMessages.value = {} //reset error msg
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`, formData)
+    // console.log(response)
+    formData.value = response.data;
+
+    Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
 
   } catch (error) {
-    console.error('Function failed:', error)
+    // console.error('saveData Function failed:', error);
     errorMessages.value = getValue(error, "response.data.errors") ?? {};
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Something wrong!",
-    });
+    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
 </script>
@@ -47,6 +50,16 @@ const saveData = async () => {
 <template>
   <VForm @submit.prevent="saveData">
     <VRow>
+
+      <VCol md="6" cols="12">
+        <ImageUpload
+          v-model ="form.photocard_image"
+          :accepted-file-types="['image/jpeg', 'image/png']"
+        />
+      </VCol>
+
+      <VCol md="6" cols="12"></VCol>
+      
       <VCol md="6" cols="12">
         <VTextField
           v-model="form.artist_name"
@@ -56,9 +69,8 @@ const saveData = async () => {
           :error-messages="getValue(errorMessages, 'artist_name')"
         />
       </VCol>
-      <VCol md="6" cols="12">
 
-      </VCol>
+      <VCol md="6" cols="12"></VCol>
       
       <VCol md="6" cols="12">
         <VTextField
