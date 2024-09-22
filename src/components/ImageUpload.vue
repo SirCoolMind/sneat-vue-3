@@ -13,7 +13,7 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 // Import Vue FilePond and plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -57,5 +57,10 @@ const onFileUpdate = (fileItems) => {
   emit('update:modelValue', internalFiles.value);
   console.log(internalFiles.value);
 };
+
+// Watch for changes in modelValue and update internalFiles
+watch(() => props.modelValue, (newFiles) => {
+  internalFiles.value = newFiles || [];
+});
 
 </script>
