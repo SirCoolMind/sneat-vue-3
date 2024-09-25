@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .filepond--item {
   width: 100%;
 }
@@ -15,15 +15,18 @@
 }
 
 </style>
+
 <template>
   <file-pond
     name="test"
     ref="pond"
     credits="false"
-    label-idle="Drop files here..."
     :accepted-file-types="acceptedFileTypes"
     :files="internalFiles"
     @init="handleFilePondInit"
+    @removefile="clearFile"
+    allowImagePreview="true"
+    imagePreviewMaxFileSize="5MB"
     @updatefiles="onFileUpdate"
   />
 </template>
@@ -47,11 +50,23 @@ const FilePond = vueFilePond(
   FilePondPluginImagePreview
 );
 
+/** Make sure every props have structure like below 
+ * {
+    source => '', // usually url of file
+    filename =>'', 
+    is_available => true // will determine should show component or not
+  }
+*/
+
 // Define props
 const props = defineProps({
   modelValue: {
-    type: Array,
-    default: () => []
+    type: Object,
+    default: () => ({
+      source:  '',
+      filename: '',
+      is_available:  true
+    })
   },
   acceptedFileTypes: {
     type: Array,
@@ -61,18 +76,35 @@ const props = defineProps({
 
 // Custom event handlers
 const handleFilePondInit = () => {
-  // console.log("FilePond: Image Upload has initialized");
+  // console.log("FilePond Image Preview has initialized");
 };
 
 // Reactive state for the files inside the component
-const internalFiles = ref(props.modelValue || []);
+const internalFiles = ref(props.modelValue.source || []);
 const emit = defineEmits(['update:modelValue']);
 
 const onFileUpdate = (fileItems) => {
-  // console.log("onfileupdate");
-  internalFiles.value = fileItems.map(item => item.file);
-  emit('update:modelValue', internalFiles.value);
-  // console.log(internalFiles.value);
+  // try {
+  //   console.log("onfileupdate");
+  //   console.log(props.modelValue.filename);
+  //   console.log(fileItems[0].getMetadata());
+  //   console.log(fileItems[0].file);
+  //   fileItems[0].setMetadata('filename', props.modelValue.filename)
+  //   fileItems[0].file.name = props.modelValue.filename
+  //   console.log(fileItems[0]);
+  // } catch (error) {
+  //   console.error(error)
+  // }
+
+};
+
+const clearFile = () => {
+  // Emit the updated file data with is_available set to false
+  // console.log("clearFile");
+  emit('update:modelValue', {
+    ...props.modelValue,
+    is_available: false
+  });
 };
 
 // Watch for changes in modelValue and update internalFiles
