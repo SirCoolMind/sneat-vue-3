@@ -1,12 +1,32 @@
 <script setup>
-import ImageUpload from '@/components/ImageUpload.vue';
 import { getValue } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+
+// ui
+const modeView = 'view';
+const modeEdit = 'edit';
+const mode = ref(modeView);
+const recordId = ref(route.params.kpop_item_id || 'new');
+watch(recordId, (newId, oldId) => {
+  console.log(`Record ID changed from ${oldId} to ${newId}`);
+  mode.value = 'view';
+  record.value = {...defaultRecord};
+  getData();
+});
+
+const canEdit = () => {
+  return mode.value == modeEdit;
+}
 
 // Data related function
 const errorMessages = ref({})
-const form = ref({
+const defaultRecord = {
   artist_name : '',
   era_name : '',
   version_name : '',
@@ -17,27 +37,24 @@ const form = ref({
   bought_place : '',
   bought_comment : '',
   photocard_image : [],
-})
+  photocard_image_upload : [],
+};
+const record = ref({...defaultRecord});
 
+onMounted(() => {
+  getData();
+});
 
-const saveData = async () => {
+const getData = async () => {
+  if(recordId.value == 'new')
+    return;
+
   try {
-    const formData = new FormData();
-    Object.entries(form.value).forEach(([key, value]) => {
-      if (!['photocard_image'].includes(key)) { // Skip the image field for now
-        formData.append(key, value);
-      }
-    });
-    if (form.value.photocard_image.length > 0) {
-      formData.append('photocard_image', form.value.photocard_image[0]); // Append the first image file
-    }
-
-    errorMessages.value = {} //reset error msg
-    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`, formData)
-    // console.log(response)
-    formData.value = response.data;
-
-    Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
+    console.log(`Fetching data for record ID: ${recordId.value}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item/${recordId.value}`)
+    record.value = response.data.data;
+    record.value.photocard_image_upload = [];
+    console.log(record.value)
 
   } catch (error) {
     // console.error('saveData Function failed:', error);
@@ -45,103 +62,185 @@ const saveData = async () => {
     Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
+
+const saveData = async () => {
+  try {
+
+    console.log(record.value)
+    const formData = new FormData();
+    Object.entries(record.value).forEach(([key, value]) => {
+      if (!['photocard_image', 'photocard_image_upload'].includes(key)) { // Skip the image field for now
+        formData.append(key, value);
+      }
+    });
+    if (record.value.photocard_image_upload.length > 0) {
+      formData.append('photocard_image_upload', record.value.photocard_image_upload[0]); // Append the first image file
+    }
+
+    errorMessages.value = {} //reset error msg
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`, formData)
+    console.log(response)
+
+    record.value = response.data.data;
+
+    Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
+
+    await router.push(`/kpop-collection/${record.value.id}`);
+
+  } catch (error) {
+    console.error('saveData Function failed:', error);
+    errorMessages.value = getValue(error, "response.data.errors") ?? {};
+    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
+  }
+}
+
+// Method to check if any image is available
+const checkIfAvailable = (images = []) => {
+  return images.some(image => getValue(image,'is_available') == true);
+};
 </script>
 
 <template>
-  <VForm @submit.prevent="saveData">
-    <VRow>
+  <VCard>
+    <template v-slot:title>
+      <VRow> 
+        <VCol md="4" cols="12">Photocard Detail</VCol>
+        <VCol md="8" cols="12" align="right">
+          <v-fab-transition group :disabled="!canEdit()">
+            <template v-if="canEdit()">
+              <VBtn @click="saveData" class="me-2">Submit</VBtn>
+              <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+            </template>
+          </v-fab-transition>
+          <v-fab-transition group :disabled="canEdit()">
+            <template v-if="!canEdit()">
+              <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
+            </template>
+          </v-fab-transition>
+        </VCol>
+      </VRow>
+    </template>
+    <VCardText>
+      <VForm>
+        <!-- <h1>Current Mode: {{ mode }}</h1>
+        <h1>Current RecordId: {{ recordId }}</h1>
+        <h1>Current RecordId: {{ record }}</h1> -->
+        <VRow v-if="checkIfAvailable(record.photocard_image)">
+          <VCol md="4" cols="12" v-for="(image, i) in record.photocard_image">
+            <ImagePreview
+              v-if=" image.is_available"
+              v-model="record.photocard_image[i]"
+            />
+          </VCol>
+        </VRow>
+        <VRow v-else>
+          <VCol md="4" cols="12">
+            <ImageUpload
+              v-model ="record.photocard_image_upload"
+              :accepted-file-types="['image/jpeg', 'image/png']"
+            />
+          </VCol>
+          <VCol md="6" cols="12"></VCol>
+        </VRow>
+        <VRow>    
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.artist_name"
+              prepend-inner-icon="bx-user"
+              label="Artist Name"
+              placeholder="Winter Aespa"
+              :error-messages="getValue(errorMessages, 'artist_name')"
+            />
+          </VCol>
+        </VRow>
+        <VRow> 
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.era_name"
+              prepend-inner-icon="bx-envelope"
+              label="Era Name"
+              placeholder="Armageddon"
+              :error-messages="getValue(errorMessages, 'era_name')"
+            />
+          </VCol>
 
-      <VCol md="6" cols="12">
-        <ImageUpload
-          v-model ="form.photocard_image"
-          :accepted-file-types="['image/jpeg', 'image/png']"
-        />
-      </VCol>
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.version_name"
+              prepend-inner-icon="bx-envelope"
+              label="Version Name"
+              placeholder="Superbeing Album PC"
+              :error-messages="getValue(errorMessages, 'version_name')"
+            />
+          </VCol>
 
-      <VCol md="6" cols="12"></VCol>
-      
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.artist_name"
-          prepend-inner-icon="bx-user"
-          label="Artist Name"
-          placeholder="Winter Aespa"
-          :error-messages="getValue(errorMessages, 'artist_name')"
-        />
-      </VCol>
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.comment"
+              prepend-inner-icon="bx-envelope"
+              label="Comment"
+              placeholder="..."
+              :error-messages="getValue(errorMessages, 'comment')"
+            />
+          </VCol>
 
-      <VCol md="6" cols="12"></VCol>
-      
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.era_name"
-          prepend-inner-icon="bx-envelope"
-          label="Era Name"
-          placeholder="Armageddon"
-          :error-messages="getValue(errorMessages, 'era_name')"
-        />
-      </VCol>
+        </VRow>
+        <VRow> 
+        
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.bought_price"
+              prepend-inner-icon="bx-envelope"
+              label="Bought Price (RM)"
+              placeholder="10.00"
+              :error-messages="getValue(errorMessages, 'bought_price')"
+            />
+          </VCol>
+        
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"  
+              v-model="record.bought_place"
+              prepend-inner-icon="bx-envelope"
+              label="Bought Place"
+              placeholder="Twitter"
+              :error-messages="getValue(errorMessages, 'bought_place')"
+            />
+          </VCol>
 
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.version_name"
-          prepend-inner-icon="bx-envelope"
-          label="Version Name"
-          placeholder="Superbeing Album PC"
-          :error-messages="getValue(errorMessages, 'version_name')"
-        />
-      </VCol>
-
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.comment"
-          prepend-inner-icon="bx-envelope"
-          label="Comment"
-          placeholder="..."
-          :error-messages="getValue(errorMessages, 'comment')"
-        />
-      </VCol>
-      <VCol md="6" cols="12">
-
-      </VCol>
-    
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.bought_price"
-          prepend-inner-icon="bx-envelope"
-          label="Bought Price (RM)"
-          placeholder="10.00"
-          :error-messages="getValue(errorMessages, 'bought_price')"
-        />
-      </VCol>
-     
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.bought_place"
-          prepend-inner-icon="bx-envelope"
-          label="Bought Place"
-          placeholder="Twitter"
-          :error-messages="getValue(errorMessages, 'bought_place')"
-        />
-      </VCol>
-
-      <VCol md="6" cols="12">
-        <VTextField
-          v-model="form.bought_comment"
-          prepend-inner-icon="bx-envelope"
-          label="Bought Comment"
-          placeholder="..."
-          :error-messages="getValue(errorMessages, 'bought_comment')"
-        />
-      </VCol>
-      <VCol md="6" cols="12">
-
-      </VCol>
-
-      <VCol cols="12">
-        <VBtn type="submit" class="me-2">Submit</VBtn>
-        <VBtn color="secondary" type="reset" variant="tonal">Reset</VBtn>
-      </VCol>
-    </VRow>
-  </VForm>
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.bought_comment"
+              prepend-inner-icon="bx-envelope"
+              label="Bought Comment"
+              placeholder="..."
+              :error-messages="getValue(errorMessages, 'bought_comment')"
+            />
+          </VCol>
+          
+        </VRow>
+        <VRow> 
+          <VCol cols="12" align="right">
+            <v-fab-transition group :disabled="!canEdit()">
+              <template v-if="canEdit()">
+                <VBtn @click="saveData" class="me-2">Submit</VBtn>
+                <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+              </template>
+            </v-fab-transition>
+            <v-fab-transition group :disabled="canEdit()">
+              <template v-if="!canEdit()">
+                <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
+              </template>
+            </v-fab-transition>
+          </VCol>
+        </VRow>
+      </VForm>
+    </VCardText>
+  </VCard>
 </template>

@@ -6,11 +6,7 @@ import KpopItemForm from '@/views/kpop-collection/KpopItemForm.vue';
   <div>
     <VRow>
       <VCol cols="12" md="12" >
-        <VCard title="Kpop Item Details">
-          <VCardText>
-            <KpopItemForm />
-          </VCardText>
-        </VCard>
+        <KpopItemForm />
       </VCol>
     </VRow>
   </div>

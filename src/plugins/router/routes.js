@@ -33,7 +33,7 @@ export const routes = [
         component: () => import('@/pages/form-layouts.vue'),
       },
       {
-        path: 'kpop-collection',
+        path: 'kpop-collection/:kpop_item_id',
         component: () => import('@/views/kpop-collection/View.vue'),
       },
     ],
