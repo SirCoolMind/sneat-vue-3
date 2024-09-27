@@ -109,7 +109,7 @@ const clearFile = () => {
 
 // Watch for changes in modelValue and update internalFiles
 watch(() => props.modelValue, (newFiles) => {
-  internalFiles.value = newFiles || [];
+  internalFiles.value = newFiles.source || [];
 });
 
 </script>
