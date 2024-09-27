@@ -98,13 +98,35 @@ const saveData = async () => {
 const checkIfAvailable = (images = []) => {
   return images.some(image => getValue(image,'is_available') == true);
 };
+
+const title = computed(() => {
+  return record 
+    ? getValue(record.value, 'artist_name', '') + ' (' + getValue(record.value, 'era_name', '') + ' - ' + getValue(record.value, 'version_name', '') + ')'
+    : '';
+})
+const breadcrumbs = ref([
+  {
+    title: 'Photocard',
+    disabled: false,
+    show: true,
+    href: 'breadcrumbs_collection',
+  },
+  {
+    title: title,
+    disabled: true,
+    show: true,
+    href: 'breadcrumbs_item',
+  }
+]);
 </script>
 
 <template>
   <VCard>
     <template v-slot:title>
-      <VRow> 
-        <VCol md="4" cols="12">Photocard Detail</VCol>
+      <VRow align="center"> 
+        <VCol md="4" cols="12">
+          <Breadcrumbs :items="breadcrumbs"/>        
+        </VCol>
         <VCol md="8" cols="12" align="right">
           <v-fab-transition group :disabled="!canEdit()">
             <template v-if="canEdit()">
