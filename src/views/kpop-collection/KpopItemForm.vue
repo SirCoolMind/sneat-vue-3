@@ -12,6 +12,10 @@ const route = useRoute();
 const modeView = 'view';
 const modeEdit = 'edit';
 const mode = ref(modeView);
+const canEdit = () => {
+  return mode.value == modeEdit;
+}
+
 const recordId = ref(route.params.kpop_item_id || 'new');
 watch(recordId, (newId, oldId) => {
   console.log(`Record ID changed from ${oldId} to ${newId}`);
@@ -20,9 +24,7 @@ watch(recordId, (newId, oldId) => {
   getData();
 });
 
-const canEdit = () => {
-  return mode.value == modeEdit;
-}
+
 
 // Data related function
 const errorMessages = ref({})
@@ -78,10 +80,16 @@ const saveData = async () => {
     }
 
     errorMessages.value = {} //reset error msg
-    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`, formData)
+    let url= `${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`;
+    if(recordId.value != 'new') {
+      url += '/'+recordId.value;
+      formData.append('_method', 'PUT');
+    }
+    const response = await axios.post(url, formData);
     console.log(response)
 
     record.value = response.data.data;
+    mode.value = modeView; // reset back to view
 
     Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
 
@@ -96,6 +104,8 @@ const saveData = async () => {
 
 // Method to check if any image is available
 const checkIfAvailable = (images = []) => {
+  // console.log("checkIfAvailable");
+  // console.log(images);
   return images.some(image => getValue(image,'is_available') == true);
 };
 
@@ -150,8 +160,9 @@ const breadcrumbs = ref([
         <VRow v-if="checkIfAvailable(record.photocard_image)">
           <VCol md="4" cols="12" v-for="(image, i) in record.photocard_image">
             <ImagePreview
-              v-if=" image.is_available"
+              v-if="image.is_available"
               v-model="record.photocard_image[i]"
+              :key="new Date().getSeconds()+i"
             />
           </VCol>
         </VRow>
