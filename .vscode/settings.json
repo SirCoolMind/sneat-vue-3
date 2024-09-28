@@ -105,5 +105,10 @@
         "borderStyle": "solid"
       }
     ]
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#630102",
+    "titleBar.activeBackground": "#8B0203",
+    "titleBar.activeForeground": "#FFFBFB"
   }
 }
