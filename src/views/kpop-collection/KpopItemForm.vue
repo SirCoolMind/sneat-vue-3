@@ -119,13 +119,12 @@ const breadcrumbs = ref([
     title: 'Photocard',
     disabled: false,
     show: true,
-    href: 'breadcrumbs_collection',
+    route: { name: 'kpop-collection.item.listing'},
   },
   {
     title: title,
     disabled: true,
     show: true,
-    href: 'breadcrumbs_item',
   }
 ]);
 </script>
@@ -138,13 +137,13 @@ const breadcrumbs = ref([
           <Breadcrumbs :items="breadcrumbs"/>        
         </VCol>
         <VCol md="8" cols="12" align="right">
-          <v-fab-transition group :disabled="!canEdit()">
+          <v-fab-transition group :disabled="!canEdit()" key="editing-btns">
             <template v-if="canEdit()">
               <VBtn @click="saveData" class="me-2">Submit</VBtn>
               <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
             </template>
           </v-fab-transition>
-          <v-fab-transition group :disabled="canEdit()">
+          <v-fab-transition group :disabled="canEdit()" key="view-btns">
             <template v-if="!canEdit()">
               <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
             </template>

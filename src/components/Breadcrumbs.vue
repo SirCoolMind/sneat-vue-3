@@ -18,7 +18,7 @@
       <VBreadcrumbsItem 
         v-if="item.show" 
         :title="item.title"
-        :to="item.href"
+        :to="item.route"
         :disabled="item.disabled"
       ></VBreadcrumbsItem>
     </template>
@@ -35,7 +35,7 @@ import { VBreadcrumbsItem } from 'vuetify/lib/components/index.mjs';
     title: '', // name of breadcrumb
     disabled: true, // can click link or not
     show: false, // will be shown or not
-    href: '',
+    route: { name: 'named-route', params: { object_id: 'new'}},
   }
 */
 const props = defineProps({
@@ -46,7 +46,7 @@ const props = defineProps({
         title: '', // name of breadcrumb
         disabled: true, // can click link or not
         show: false, // will be shown or not
-        href: '',
+        route: '',
       }
     ]
   },

@@ -34,6 +34,7 @@ export const routes = [
       },
       {
         path: 'kpop-collection/:kpop_item_id',
+        name: 'kpop-collection.item.view',
         component: () => import('@/views/kpop-collection/View.vue'),
       },
     ],
