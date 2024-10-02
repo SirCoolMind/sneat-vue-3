@@ -43,3 +43,7 @@ public/mockServiceWorker.js
 !.env.example
 components.d.ts
 auto-imports.d.ts
+*.tar
+*.tar.gz
+local-env
+server-env
