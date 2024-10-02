@@ -42,6 +42,17 @@ const navItems = [
     heading: 'Apps',
   },
   {
+    title: 'KPOP Collection',
+    icon: 'bx-collection',
+    children: [
+      {
+        title: 'Photocards',
+        icon: 'bx-collection',
+        to: '/kpop-collection',
+      },
+    ]
+  },
+  {
     heading: "Templates Things"
   },
   {

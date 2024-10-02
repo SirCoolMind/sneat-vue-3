@@ -35,12 +35,12 @@ export const routes = [
       {
         path: 'kpop-collection',
         name: 'kpop-collection.item.listing',
-        component: () => import('@/views/kpop-collection/Listing.vue'),
+        component: () => import('@/views/kpop-collection/kpop-item/Listing.vue'),
       },
       {
         path: 'kpop-collection/:kpop_item_id',
         name: 'kpop-collection.item.view',
-        component: () => import('@/views/kpop-collection/View.vue'),
+        component: () => import('@/views/kpop-collection/kpop-item/View.vue'),
       },
     ],
   },

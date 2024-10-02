@@ -1,5 +1,5 @@
 <script setup>
-import KpopItemForm from '@/views/kpop-collection/KpopItemForm.vue';
+import KpopItemForm from '@/views/kpop-collection/kpop-item/KpopItemForm.vue';
 </script>
 
 <template>
