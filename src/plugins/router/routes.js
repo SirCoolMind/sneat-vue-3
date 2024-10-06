@@ -42,6 +42,16 @@ export const routes = [
         name: 'kpop-collection.item.view',
         component: () => import('@/views/kpop-collection/kpop-item/View.vue'),
       },
+      {
+        path: 'kpop/data-setup',
+        name: 'kpop-collection.data-setup.listing',
+        component: () => import('@/views/kpop-collection/data-setup/Listing.vue'),
+      },
+      {
+        path: 'kpop/data-setup/:kpop_era_id',
+        name: 'kpop-collection.data-setup.view',
+        component: () => import('@/views/kpop-collection/data-setup/View.vue'),
+      },
     ],
   },
   {

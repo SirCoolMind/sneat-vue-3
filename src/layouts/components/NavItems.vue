@@ -50,6 +50,11 @@ const navItems = [
         icon: 'bx-collection',
         to: '/kpop-collection',
       },
+      {
+        title: 'Data Setup',
+        icon: 'bx-wrench',
+        to: '/kpop/data-setup',
+      },
     ]
   },
   {
