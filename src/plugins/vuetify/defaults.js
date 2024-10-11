@@ -151,6 +151,7 @@ export default {
     color: 'primary',
     density: 'comfortable',
     hideDetails: 'auto',
+    persistentPlaceholder: true,
     menuProps: {
       contentClass: 'app-autocomplete__content v-autocomplete__content',
     },

@@ -188,6 +188,21 @@ const breadcrumbs = ref([
         </VRow>
         <VRow> 
           <VCol md="6" cols="12">
+            <TestLookup
+              v-model="record.era_id" 
+              :dense="true"
+              :box="true"
+              :outline="true"
+              :single-line="false"
+              class="thin-border"
+              :return-object="true"
+              :error="getValue(errorMessages, '')"
+              prepend-inner-icon="bx-user"
+              label="Era"
+            ></TestLookup>
+          </VCol>
+
+          <VCol md="6" cols="12">
             <VTextField
               :readonly="!canEdit()"
               v-model="record.era_name"
