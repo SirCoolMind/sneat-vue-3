@@ -4,6 +4,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import KpopEraLookup from '../lookup/KpopEraLookup.vue';
+import KpopVersionLookup from '../lookup/KpopVersionLookup.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -32,8 +34,8 @@ const defaultRecord = {
   artist_name : '',
   era_name : '',
   version_name : '',
-  kpop_era_id : '1',
-  kpop_era_version_id : '1',
+  kpop_era_id : {},
+  kpop_era_version_id : {},
   comment : '',
   bought_price : '',
   bought_place : '',
@@ -111,7 +113,7 @@ const checkIfAvailable = (images = []) => {
 
 const title = computed(() => {
   return record 
-    ? getValue(record.value, 'artist_name', '') + ' (' + getValue(record.value, 'era_name', '') + ' - ' + getValue(record.value, 'version_name', '') + ')'
+    ? getValue(record.value, 'kpop_era_id.name', '') + ' (' + getValue(record.value, 'kpop_era_version_id.name', '') + ' - ' + getValue(record.value, 'kpop_era_version_id.name', '') + ')'
     : '';
 })
 const breadcrumbs = ref([
@@ -188,40 +190,51 @@ const breadcrumbs = ref([
         </VRow>
         <VRow> 
           <VCol md="6" cols="12">
-            <TestLookup
-              v-model="record.era_id" 
+            <VTextField
+              v-if="!canEdit()"
+              :readonly="true"
+              :value="getValue(record, 'kpop_era_id.name')"
+              prepend-inner-icon="bx-user"
+              label="Era"
+            />
+            <KpopEraLookup
+              v-else
+              v-model="record.kpop_era_id" 
               :dense="true"
               :box="true"
               :outline="true"
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, '')"
+              :error="getValue(errorMessages, 'kpop_era_id')"
               prepend-inner-icon="bx-user"
               label="Era"
-            ></TestLookup>
+            ></KpopEraLookup>
           </VCol>
-
+       
           <VCol md="6" cols="12">
             <VTextField
-              :readonly="!canEdit()"
-              v-model="record.era_name"
-              prepend-inner-icon="bx-envelope"
-              label="Era Name"
-              placeholder="Armageddon"
-              :error-messages="getValue(errorMessages, 'era_name')"
+              v-if="!canEdit()"
+              :readonly="true"
+              :value="getValue(record, 'kpop_era_version_id.name')"
+              prepend-inner-icon="bx-user"
+              label="Era"
             />
-          </VCol>
-
-          <VCol md="6" cols="12">
-            <VTextField
+            <KpopVersionLookup
+              v-else
+              v-model="record.kpop_era_version_id"
+              :era-id="record.kpop_era_id?.id" 
+              :dense="true"
+              :box="true"
+              :outline="true"
+              :single-line="false"
+              class="thin-border"
+              :return-object="true"
+              :error="getValue(errorMessages, 'kpop_era_version_id')"
+              prepend-inner-icon="bx-user"
+              label="Version"
               :readonly="!canEdit()"
-              v-model="record.version_name"
-              prepend-inner-icon="bx-envelope"
-              label="Version Name"
-              placeholder="Superbeing Album PC"
-              :error-messages="getValue(errorMessages, 'version_name')"
-            />
+            ></KpopVersionLookup>
           </VCol>
 
           <VCol md="6" cols="12">
