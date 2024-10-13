@@ -206,3 +206,23 @@ export function getOuterScrollHeight(router) {
       return "height:calc(100vh - 220px)";
   }
 }
+
+/**
+ * Function to cater form data of objects and arrays
+ */
+export function appendFormData(formData, key, value) {
+  if (Array.isArray(value)) {
+    // Handle arrays by recursively iterating over each item
+    value.forEach((item, index) => {
+      appendFormData(formData, `${key}[${index}]`, item);
+    });
+  } else if (value && typeof value === 'object' && !(value instanceof File)) {
+    // Handle nested objects (excluding File objects)
+    Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+      appendFormData(formData, `${key}[${nestedKey}]`, nestedValue);
+    });
+  } else {
+    // Handle primitive values and File objects
+    formData.append(key, value);
+  }
+}

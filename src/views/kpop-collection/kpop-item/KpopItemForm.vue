@@ -1,5 +1,5 @@
 <script setup>
-import { getValue } from '@/utils/helpers';
+import { appendFormData, getValue } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ref } from 'vue';
@@ -17,6 +17,13 @@ const mode = ref(modeView);
 const canEdit = () => {
   return mode.value == modeEdit;
 }
+watch(mode, (newMode, oldMode) => {
+  console.log(`Mode ID changed from ${oldMode} to ${newMode}`);
+  if(newMode == "view" && oldMode == "edit") {
+    record.value = {...defaultRecord};
+    getData();
+  }
+});
 
 const recordId = ref(route.params.kpop_item_id || 'new');
 watch(recordId, (newId, oldId) => {
@@ -26,7 +33,8 @@ watch(recordId, (newId, oldId) => {
   getData();
 });
 
-
+if(recordId.value == 'new') //change to edit mode if new
+  mode.value = modeEdit;
 
 // Data related function
 const errorMessages = ref({})
@@ -58,7 +66,7 @@ const getData = async () => {
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item/${recordId.value}`)
     record.value = response.data.data;
     record.value.photocard_image_upload = [];
-    console.log(record.value)
+    // console.log(record.value)
 
   } catch (error) {
     // console.error('saveData Function failed:', error);
@@ -70,13 +78,16 @@ const getData = async () => {
 const saveData = async () => {
   try {
 
-    console.log(record.value)
+    // console.log(record.value)
     const formData = new FormData();
+
     Object.entries(record.value).forEach(([key, value]) => {
-      if (!['photocard_image', 'photocard_image_upload'].includes(key)) { // Skip the image field for now
-        formData.append(key, value);
-      }
+      // Skip keys if necessary
+      if (['photocard_image', 'photocard_image_upload'].includes(key)) return;
+
+      appendFormData(formData, key, value);
     });
+
     if (record.value.photocard_image_upload.length > 0) {
       formData.append('photocard_image_upload', record.value.photocard_image_upload[0]); // Append the first image file
     }
@@ -88,7 +99,7 @@ const saveData = async () => {
       formData.append('_method', 'PUT');
     }
     const response = await axios.post(url, formData);
-    console.log(response)
+    // console.log(response)
 
     record.value = response.data.data;
     mode.value = modeView; // reset back to view
@@ -142,7 +153,7 @@ const breadcrumbs = ref([
           <v-fab-transition group :disabled="!canEdit()" key="editing-btns">
             <template v-if="canEdit()">
               <VBtn @click="saveData" class="me-2">Submit</VBtn>
-              <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+              <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
             </template>
           </v-fab-transition>
           <v-fab-transition group :disabled="canEdit()" key="view-btns">
@@ -290,7 +301,7 @@ const breadcrumbs = ref([
             <v-fab-transition group :disabled="!canEdit()">
               <template v-if="canEdit()">
                 <VBtn @click="saveData" class="me-2">Submit</VBtn>
-                <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+                <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
               </template>
             </v-fab-transition>
             <v-fab-transition group :disabled="canEdit()">

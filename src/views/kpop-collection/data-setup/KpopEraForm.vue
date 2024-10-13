@@ -1,5 +1,5 @@
 <script setup>
-import { getValue } from '@/utils/helpers';
+import { appendFormData, getValue } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ref } from 'vue';
@@ -31,6 +31,8 @@ watch(recordId, (newId, oldId) => {
   record.value = {...defaultRecord};
   getData();
 });
+if(recordId.value == 'new') //change to edit mode if new
+  mode.value = modeEdit;
 
 // Data related function
 const errorMessages = ref({})
@@ -52,7 +54,7 @@ const getData = async () => {
     console.log(`Fetching data for record ID: ${recordId.value}`);
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-era/${recordId.value}`)
     record.value = response.data.data;
-    console.log(record.value)
+    // console.log(record.value)
 
   } catch (error) {
     // console.error('saveData Function failed:', error);
@@ -64,21 +66,14 @@ const getData = async () => {
 const saveData = async () => {
   try {
 
-    console.log("trigger saveData")
-    console.log(record.value)
+    // console.log(record.value)
     const formData = new FormData();
+   
     Object.entries(record.value).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        // If an array, custom append
-        value.forEach((item, index) => {
-          Object.entries(item).forEach(([nestedKey, nestedValue]) => {
-            formData.append(`${key}[${index}][${nestedKey}]`, nestedValue);
-          });
-        });
-      } else {
-        // If not an array, append normally
-        formData.append(key, value);
-      }
+      // Skip keys if necessary
+      // if (['photocard_image', 'photocard_image_upload'].includes(key)) return;
+
+      appendFormData(formData, key, value);
     });
 
     errorMessages.value = {} //reset error msg
@@ -88,7 +83,7 @@ const saveData = async () => {
       formData.append('_method', 'PUT');
     }
     const response = await axios.post(url, formData);
-    console.log(response)
+    // console.log(response)
 
     record.value = response.data.data;
     mode.value = modeView; // reset back to view
@@ -149,7 +144,7 @@ const addItemRecord = () => {
           <v-fab-transition group :disabled="!canEdit()" key="editing-btns">
             <template v-if="canEdit()">
               <VBtn @click="saveData" class="me-2">Submit</VBtn>
-              <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+              <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
             </template>
           </v-fab-transition>
           <v-fab-transition group :disabled="canEdit()" key="view-btns">
@@ -250,7 +245,7 @@ const addItemRecord = () => {
             <v-fab-transition group :disabled="!canEdit()">
               <template v-if="canEdit()">
                 <VBtn @click="saveData" class="me-2">Submit</VBtn>
-                <VBtn @click="mode = modeView" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+                <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
               </template>
             </v-fab-transition>
             <v-fab-transition group :disabled="canEdit()">
