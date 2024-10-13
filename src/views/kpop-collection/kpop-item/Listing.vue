@@ -103,7 +103,7 @@ const breadcrumbs = ref([
             :items="serverItems"
             :items-length="totalItems"
             :loading="loading"
-            :search="filter"
+            :search="filter.search"
             item-value="id"
             @update:options="getTablesData"
             :items-per-page-options="[5,10,30]"
@@ -123,7 +123,7 @@ const breadcrumbs = ref([
                   {{ getValue(item, 'artist_name') }}
                 </td>
                 <td>
-                  {{ getValue(item, 'era_name') + (getValue(item, 'version_name') ? ' - '+ getValue(item,' version_name') : '') }}
+                  {{ getValue(item, 'kpop_era_id.name') + (getValue(item, 'kpop_era_version_id.name') ? ' - '+ getValue(item, 'kpop_era_version_id.name') : '') }}
                 </td>
                 <td>
                   <!-- <RouterLink 

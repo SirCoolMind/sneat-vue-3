@@ -90,7 +90,7 @@ const breadcrumbs = ref([
             <VCol md="8" cols="12" align="right">
               <v-fab-transition>
                 <VBtn 
-                  :to="{name: 'kpop-collection.item.view', params: {kpop_item_id: 'new'}}"
+                  :to="{name: 'kpop-collection.data-setup.view', params: {kpop_era_id: 'new'}}"
                 >New</VBtn>
               </v-fab-transition>
             </VCol>
@@ -103,7 +103,7 @@ const breadcrumbs = ref([
             :items="serverItems"
             :items-length="totalItems"
             :loading="loading"
-            :search="filter"
+            :search="filter.search"
             item-value="id"
             @update:options="getTablesData"
             :items-per-page-options="[5,10,30]"
