@@ -68,7 +68,7 @@ export default {
 
   data() {
     return {
-      internalValue: this.value,
+      internalValue: this.modelValue,
       lookupOptions: this.itemOptions, // Default options or fetched from API
       loading: false,
       searchQuery: null,
