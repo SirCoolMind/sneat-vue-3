@@ -58,6 +58,27 @@ const navItems = [
     ]
   },
   {
+    title: 'Finance',
+    icon: 'bx-collection',
+    children: [
+      {
+        title: 'New Transaction',
+        icon: 'bx-collection',
+        to: '/finance/transaction/new',
+      },
+      {
+        title: 'Transaction',
+        icon: 'bx-collection',
+        to: '/finance/transaction',
+      },
+      {
+        title: 'Data Setup',
+        icon: 'bx-wrench',
+        to: '/finance/transaction',
+      },
+    ]
+  },
+  {
     heading: "Templates Things"
   },
   {

@@ -52,6 +52,26 @@ export const routes = [
         name: 'kpop-collection.data-setup.view',
         component: () => import('@/views/kpop-collection/data-setup/View.vue'),
       },
+      {
+        path: 'finance/transaction',
+        name: 'finance.transaction.item.listing',
+        component: () => import('@/views/finance/transaction/Listing.vue'),
+      },
+      {
+        path: 'finance/transaction/:kpop_item_id',
+        name: 'finance.transaction.item.view',
+        component: () => import('@/views/finance/transaction/View.vue'),
+      },
+      {
+        path: 'kpop/data-setup',
+        name: 'kpop-collection.data-setup.listing',
+        component: () => import('@/views/finance/data-setup/Listing.vue'),
+      },
+      {
+        path: 'kpop/data-setup/:kpop_era_id',
+        name: 'kpop-collection.data-setup.view',
+        component: () => import('@/views/finance/data-setup/View.vue'),
+      },
     ],
   },
   {
