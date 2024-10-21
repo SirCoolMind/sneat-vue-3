@@ -146,6 +146,14 @@ export default {
     hideDetails: 'auto',
     persistentPlaceholder: true,
   },
+  VDateInput: {
+    variant: 'outlined',
+    density: 'comfortable',
+    color: 'primary',
+    hideDetails: 'auto',
+    persistentPlaceholder: true,
+    prependIcon: '',
+  },
   VAutocomplete: {
     variant: 'outlined',
     color: 'primary',
@@ -181,6 +189,7 @@ export default {
     density: 'comfortable',
     color: 'primary',
     hideDetails: 'auto',
+    persistentPlaceholder: true,
   },
   VSnackbar: {
     VBtn: {
