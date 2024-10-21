@@ -19,6 +19,9 @@ export default function (app) {
       defaultTheme: 'light',
       themes,
     },
+    locale: {
+      locale: 'en-MY',
+    },
   })
 
   app.use(vuetify)
