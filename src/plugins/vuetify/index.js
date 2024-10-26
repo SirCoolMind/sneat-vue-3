@@ -19,9 +19,12 @@ export default function (app) {
       defaultTheme: 'light',
       themes,
     },
-    locale: {
-      locale: 'en-MY',
-    },
+    // locale: {
+    //   locale: 'en-MY',
+    // },
+    // Reason to enable: use correct date type inside Date Inputs.
+    // Reason to disable: weird issue of internationalization.
+    // TODO: wait for vuetify to release feature to change date format
   })
 
   app.use(vuetify)
