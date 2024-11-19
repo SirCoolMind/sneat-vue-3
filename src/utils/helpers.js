@@ -9,8 +9,8 @@ import numeral from "numeral";
  * GetValue helper
  */
 export function getValue(resource, key, defaultValue = 'capayam') {
-  if(defaultValue != 'capayam') {
-    return get(resource, key, {default: defaultValue});
+  if (defaultValue != 'capayam') {
+    return get(resource, key, { default: defaultValue });
   }
   return get(resource, key);
 }
@@ -83,6 +83,41 @@ export function formatNumber(value, format) {
 
 export function removeFormatNumber(value) {
   return numeral(value).value();
+}
+
+export function isNumeric(evt) {
+  var inp = String.fromCharCode(evt.keyCode);
+  console.log(inp);
+  console.log(/[0-9]/.test(inp));
+  if (/[0-9]/.test(inp)) {
+    return true;
+  } else {
+    evt.preventDefault();
+  }
+}
+
+export function isNumericMoney(evt, currentValue = '') {
+  const inp = String.fromCharCode(evt.keyCode || evt.which);
+
+  // Allow digits
+  if (/[0-9]/.test(inp)) {
+    // Check decimal places only if there's a dot in the value
+    const [intPart, decimalPart] = currentValue.split('.');
+    if (decimalPart && decimalPart.length >= 2) {
+      evt.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  // Allow only one dot, and only if currentValue doesn't have one yet
+  if (inp === '.' && !currentValue.includes('.')) {
+    return true;
+  }
+
+  // Block any other input
+  evt.preventDefault();
+  return false;
 }
 
 /**

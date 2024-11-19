@@ -1,5 +1,5 @@
 <script setup>
-import { appendFormData, getValue } from '@/utils/helpers';
+import { appendFormData, getValue, isNumericMoney } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ref } from 'vue';
@@ -40,8 +40,8 @@ if(recordId.value == 'new') //change to edit mode if new
 // Data related function
 const errorMessages = ref({})
 const defaultRecord = {
-  category : null,
-  subcategory : null,
+  money_subcategory : null,
+  money_category : null,
   date : null,
   comment : '',
   bought_comment : '',
@@ -58,7 +58,7 @@ const getData = async () => {
 
   try {
     console.log(`Fetching data for record ID: ${recordId.value}`);
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item/${recordId.value}`)
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction/${recordId.value}`)
     record.value = response.data.data;
     record.value.photocard_image_upload = [];
     // console.log(record.value)
@@ -88,7 +88,7 @@ const saveData = async () => {
     }
 
     errorMessages.value = {} //reset error msg
-    let url= `${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`;
+    let url= `${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`;
     if(recordId.value != 'new') {
       url += '/'+recordId.value;
       formData.append('_method', 'PUT');
@@ -101,7 +101,7 @@ const saveData = async () => {
 
     Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
 
-    await router.push(`/kpop-collection/${record.value.id}`);
+    await router.push(`/finance/transaction/${record.value.id}`);
 
   } catch (error) {
     console.error('saveData Function failed:', error);
@@ -115,7 +115,7 @@ const breadcrumbs = ref([
     title: 'Transaction',
     disabled: false,
     show: true,
-    route: { name: 'kpop-collection.item.listing'},
+    route: { name: 'finance.transaction.item.listing'},
   },
 ]);
 </script>
@@ -156,6 +156,7 @@ const breadcrumbs = ref([
               prepend-inner-icon="bx-envelope"
               label="Total (RM)"
               placeholder="10.00"
+              @keypress="isNumericMoney($event, record.bought_price)" 
               :error-messages="getValue(errorMessages, 'bought_price')"
             />
           </VCol>
@@ -185,7 +186,7 @@ const breadcrumbs = ref([
             />
             <CategoryLookup
               v-else
-              v-model="record.category" 
+              v-model="record.money_category" 
               :dense="true"
               :box="true"
               :outline="true"
@@ -208,8 +209,8 @@ const breadcrumbs = ref([
             />
             <SubCategoryLookup
               v-else
-              v-model="record.subcategory"
-              :era-id="record.category?.id" 
+              v-model="record.money_subcategory"
+              :money-category-id="record.money_category?.id" 
               :dense="true"
               :box="true"
               :outline="true"

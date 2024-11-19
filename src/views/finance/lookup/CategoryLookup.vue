@@ -85,7 +85,7 @@ export default {
   methods: {
     fetchLookupOptions() {
       axios
-        .get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/lookup/kpop-eras`)
+        .get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/lookup/get-categories`)
         .then(response => {
           this.lookupOptions = response.data.data; // Assuming API returns data inside data
         })

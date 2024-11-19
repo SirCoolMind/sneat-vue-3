@@ -45,7 +45,7 @@ export default {
     returnObject: {
       type: Boolean, default: false,
     },
-    eraId: [Number, String],
+    moneyCategoryId: [Number, String],
   },
 
   data() {
@@ -74,8 +74,8 @@ export default {
   },
 
   watch: {
-    eraId(newValue) {
-      // console.log("eraId changed");
+    moneyCategoryId(newValue) {
+      // console.log("moneyCategoryId changed");
       // console.log(newValue);
       this.loading = true;
       this.fetchLookupOptions();
@@ -95,9 +95,9 @@ export default {
   methods: {
     fetchLookupOptions() {
 
-      const url = this.eraId
-        ? `/kpop/v1/lookup/kpop-versions?kpop_era_id=${this.eraId}` // With query parameter
-        : `/kpop/v1/lookup/kpop-versions`; // Without query parameter
+      const url = this.moneyCategoryId
+        ? `/finance/v1/lookup/get-sub-categories?money_category_id=${this.moneyCategoryId}` // With query parameter
+        : `/finance/v1/lookup/get-sub-categories`; // Without query parameter
 
       axios
         .get(`${import.meta.env.VITE_API_BASE_URL}`+url)
