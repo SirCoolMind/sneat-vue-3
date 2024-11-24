@@ -9,8 +9,8 @@ import numeral from "numeral";
  * GetValue helper
  */
 export function getValue(resource, key, defaultValue = 'capayam') {
-  if(defaultValue != 'capayam') {
-    return get(resource, key, {default: defaultValue});
+  if (defaultValue != 'capayam') {
+    return get(resource, key, { default: defaultValue });
   }
   return get(resource, key);
 }
