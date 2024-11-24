@@ -1,10 +1,9 @@
 <script setup>
-import { appendFormData, getValue } from '@/utils/helpers';
+import { appendFormData, getValue, isNumericMoney } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { VDateInput } from 'vuetify/labs/components';
 import CategoryLookup from '../lookup/CategoryLookup.vue';
 import SubCategoryLookup from '../lookup/SubCategoryLookup.vue';
 
@@ -40,11 +39,11 @@ if(recordId.value == 'new') //change to edit mode if new
 // Data related function
 const errorMessages = ref({})
 const defaultRecord = {
-  category : null,
-  subcategory : null,
-  date : null,
-  comment : '',
-  bought_comment : '',
+  money_subcategory : null,
+  money_category : null,
+  amount : 0.00,
+  transaction_date : '',
+  description : '',
 };
 const record = ref({...defaultRecord});
 
@@ -58,7 +57,7 @@ const getData = async () => {
 
   try {
     console.log(`Fetching data for record ID: ${recordId.value}`);
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item/${recordId.value}`)
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction/${recordId.value}`)
     record.value = response.data.data;
     record.value.photocard_image_upload = [];
     // console.log(record.value)
@@ -78,17 +77,17 @@ const saveData = async () => {
 
     Object.entries(record.value).forEach(([key, value]) => {
       // Skip keys if necessary
-      if (['photocard_image', 'photocard_image_upload'].includes(key)) return;
+      if (['img'].includes(key)) return;
+
+      console.log(value);
 
       appendFormData(formData, key, value);
     });
 
-    if (record.value.photocard_image_upload.length > 0) {
-      formData.append('photocard_image_upload', record.value.photocard_image_upload[0]); // Append the first image file
-    }
+    console.log(formData.value);
 
     errorMessages.value = {} //reset error msg
-    let url= `${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`;
+    let url= `${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`;
     if(recordId.value != 'new') {
       url += '/'+recordId.value;
       formData.append('_method', 'PUT');
@@ -101,7 +100,7 @@ const saveData = async () => {
 
     Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
 
-    await router.push(`/kpop-collection/${record.value.id}`);
+    await router.push(`/finance/transaction/${record.value.id}`);
 
   } catch (error) {
     console.error('saveData Function failed:', error);
@@ -115,7 +114,7 @@ const breadcrumbs = ref([
     title: 'Transaction',
     disabled: false,
     show: true,
-    route: { name: 'kpop-collection.item.listing'},
+    route: { name: 'finance.transaction.item.listing'},
   },
 ]);
 </script>
@@ -152,24 +151,33 @@ const breadcrumbs = ref([
           <VCol md="6" cols="12">
             <VTextField
               :readonly="!canEdit()"
-              v-model="record.bought_price"
+              v-model="record.amount"
               prepend-inner-icon="bx-envelope"
               label="Total (RM)"
               placeholder="10.00"
-              :error-messages="getValue(errorMessages, 'bought_price')"
+              @keypress="isNumericMoney($event, record.amount)" 
+              :error-messages="getValue(errorMessages, 'amount')"
             />
           </VCol>
          
           <VCol md="6" cols="12">
-            <VDateInput
+            <!-- <VDateInput
               :readonly="!canEdit()"
-              v-model="record.date"
+              v-model="record.transaction_date"
               prepend-inner-icon="bx-calendar"
               label="Date"
-              :error-messages="getValue(errorMessages, 'bought_price')"
+              :error-messages="getValue(errorMessages, 'transaction_date')"
               hide-actions
-              placeholder="dd/mm/yyyy"
-            />
+              placeholder="dd/mm/yyyy" 
+            /> -->
+            <DateInputField
+              v-model="record.transaction_date"
+              :rules="[(v) => !!v || 'Date is required!']"
+              clearable
+              hide-details="auto"
+              color="primary"
+              label="Date"
+            ></DateInputField>  
           </VCol>
 
         </VRow>
@@ -185,14 +193,14 @@ const breadcrumbs = ref([
             />
             <CategoryLookup
               v-else
-              v-model="record.category" 
+              v-model="record.money_category" 
               :dense="true"
               :box="true"
               :outline="true"
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'category')"
+              :error="getValue(errorMessages, 'money_category.id')"
               prepend-inner-icon="bx-user"
               label="Category"
             ></CategoryLookup>
@@ -208,15 +216,15 @@ const breadcrumbs = ref([
             />
             <SubCategoryLookup
               v-else
-              v-model="record.subcategory"
-              :era-id="record.category?.id" 
+              v-model="record.money_subcategory"
+              :money-category-id="record.money_category?.id" 
               :dense="true"
               :box="true"
               :outline="true"
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'subcategory')"
+              :error="getValue(errorMessages, 'money_subcategory.id')"
               prepend-inner-icon="bx-user"
               label="Sub-Category"
               :readonly="!canEdit()"
@@ -228,11 +236,11 @@ const breadcrumbs = ref([
           <VCol md="6" cols="12">
             <VTextarea
               :readonly="!canEdit()"
-              v-model="record.bought_comment"
+              v-model="record.description"
               prepend-inner-icon="bx-envelope"
               label="Description"
               placeholder="..."
-              :error-messages="getValue(errorMessages, 'bought_comment')"
+              :error-messages="getValue(errorMessages, 'description')"
             />
           </VCol>
           

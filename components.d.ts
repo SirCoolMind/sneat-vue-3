@@ -11,6 +11,7 @@ declare module 'vue' {
     CardStatisticsHorizontal: typeof import('./src/@core/components/cards/CardStatisticsHorizontal.vue')['default']
     CardStatisticsVertical: typeof import('./src/@core/components/cards/CardStatisticsVertical.vue')['default']
     CardStatisticsWithImages: typeof import('./src/@core/components/cards/CardStatisticsWithImages.vue')['default']
+    DateInputField: typeof import('./src/components/DateInputField.vue')['default']
     ErrorHeader: typeof import('./src/components/ErrorHeader.vue')['default']
     ImagePreview: typeof import('./src/components/ImagePreview.vue')['default']
     ImageUpload: typeof import('./src/components/ImageUpload.vue')['default']
