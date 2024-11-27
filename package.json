@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --mode server",
     "preview": "vite preview --port 5050",
     "lint": "eslint . -c .eslintrc.cjs --fix --ext .ts,.js,.cjs,.vue,.tsx,.jsx",
     "build:icons": "tsx src/plugins/iconify/build-icons.js",
-    "postinstall": "npm run build:icons"
+    "postinstall": "npm run build:icons",
+    "build-zip": "pnpm run build && pnpm run dist-zip",
+    "dist-zip": "node -e \"require('tar').create({ gzip: true, file: 'vuetemplate.tar.gz' }, ['dist']).then(() => console.log('dist.tar.gz created outside dist'));\""
   },
   "dependencies": {
     "@floating-ui/dom": "1.6.3",
