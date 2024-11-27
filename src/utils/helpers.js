@@ -85,6 +85,43 @@ export function removeFormatNumber(value) {
   return numeral(value).value();
 }
 
+export function isNumeric(evt) {
+  var inp = String.fromCharCode(evt.keyCode);
+  
+  if (/[0-9]/.test(inp)) {
+    return true;
+  } else {
+    evt.preventDefault();
+  }
+}
+
+export function isNumericMoney(evt, currentValue = '') {
+  const inp = String.fromCharCode(evt.keyCode || evt.which);
+
+  // Convert currentValue to a string to avoid split errors
+  currentValue = String(currentValue);
+
+  // Allow digits
+  if (/[0-9]/.test(inp)) {
+    // Check decimal places only if there's a dot in the value
+    const [intPart, decimalPart] = currentValue.split('.');
+    if (decimalPart && decimalPart.length >= 2) {
+      evt.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  // Allow only one dot, and only if currentValue doesn't have one yet
+  if (inp === '.' && !currentValue.includes('.')) {
+    return true;
+  }
+
+  // Block any other input
+  evt.preventDefault();
+  return false;
+}
+
 /**
  * format address
  */
