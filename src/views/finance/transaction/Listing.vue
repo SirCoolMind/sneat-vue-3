@@ -1,24 +1,28 @@
 <script setup>
-import { getValue } from '@/utils/helpers';
+import { getDateFromISO, getValue } from '@/utils/helpers';
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 
 // Define reactive state variables
 const headers = ref([
   { 
-    title: '', 
-    align: 'start',
-    sortable: false,
-    key: 'id'
-  },
-  { 
-    title: 'Artist Name', 
-    key: 'name', 
+    title: 'Date', 
+    key: 'date', 
     align: 'start' 
   },
   { 
-    title: 'Version', 
-    key: 'version', 
+    title: 'Total (RM)', 
+    key: 'money', 
+    align: 'start' 
+  },
+  { 
+    title: 'Category', 
+    key: 'category', 
+    align: 'start' 
+  },
+  { 
+    title: 'Subcategory', 
+    key: 'subcategory', 
     align: 'start' 
   },
   { 
@@ -49,7 +53,7 @@ const getTablesData = async ({ page, itemsPerPage, sortBy = '' }) => {
   try {
     loading.value = true
     console.log(`Fetching listing data`);
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-item`, {
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`, {
       params: {
         page, rows_per_page: itemsPerPage, sort_by: sortBy, filter: name.value
       },
@@ -91,7 +95,7 @@ const breadcrumbs = ref([
             <VCol md="8" cols="12" align="right">
               <v-fab-transition>
                 <VBtn 
-                  :to="{name: 'kpop-collection.item.view', params: {kpop_item_id: 'new'}}"
+                  :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: 'new'}}"
                 >New</VBtn>
               </v-fab-transition>
             </VCol>
@@ -110,27 +114,24 @@ const breadcrumbs = ref([
           >
             <template v-slot:item="{item, index}">
               <tr>
-                <td align="center">
-                  <VImg
-                    v-if="getValue(item, 'photocard_image.0')"
-                    :src="getValue(item, 'photocard_image.0.source')"
-                    :width="150"
-                    height="auto"
-                    class="my-2"
-                  />
+                <td>
+                  {{ getDateFromISO(getValue(item, 'transaction_date')) }}
                 </td>
                 <td>
-                  {{ getValue(item, 'artist_name') }}
+                  {{ getValue(item, 'amount') }}
                 </td>
                 <td>
-                  {{ getValue(item, 'kpop_era_id.name') + (getValue(item, 'kpop_era_version_id.name') ? ' - '+ getValue(item, 'kpop_era_version_id.name') : '') }}
+                  {{ getValue(item, 'money_category.name') }}
+                </td>
+                <td>
+                  {{ getValue(item, 'money_subcategory.name') }}
                 </td>
                 <td>
                   <!-- <RouterLink 
-                    :to="{name: 'kpop-collection.item.view', params: {kpop_item_id: item.id}}"
+                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
                   >{{ getValue(item, 'name') }}</RouterLink> -->
                   <VBtn 
-                    :to="{name: 'kpop-collection.item.view', params: {kpop_item_id: item.id}}"
+                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
                     prepend-icon="bx-show"
                     text="View"
                   ></VBtn>
