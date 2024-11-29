@@ -146,20 +146,8 @@ const breadcrumbs = ref([
         <!-- <h1>Current Mode: {{ mode }}</h1>
         <h1>Current RecordId: {{ recordId }}</h1>
         <h1>Current RecordId: {{ record }}</h1> -->
-        <VRow> 
-          
-          <VCol md="6" cols="12">
-            <VTextField
-              :readonly="!canEdit()"
-              v-model="record.amount"
-              prepend-inner-icon="bx-money"
-              label="Total (RM)"
-              placeholder="10.00"
-              @keypress="isNumericMoney($event, record.amount)" 
-              :error-messages="getValue(errorMessages, 'amount')"
-            />
-          </VCol>
-         
+        <VRow>
+
           <VCol md="6" cols="12">
             <!-- <VDateInput
               :readonly="!canEdit()"
@@ -178,6 +166,19 @@ const breadcrumbs = ref([
               color="primary"
               label="Date"
             ></DateInputField>  
+          </VCol>
+           
+          <VCol md="6" cols="12">
+            <VTextField
+              :readonly="!canEdit()"
+              v-model="record.amount"
+              prepend-inner-icon="bx-money"
+              label="Total (RM)"
+              placeholder="10.00"
+              @keypress="isNumericMoney($event, record.amount)" 
+              :error-messages="getValue(errorMessages, 'amount')"
+              inputmode="numeric"
+            />
           </VCol>
 
         </VRow>
