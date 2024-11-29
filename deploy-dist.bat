@@ -16,7 +16,7 @@ echo Uploading %LOCAL_FILE% to %SERVER_USER%@%SERVER_IP%:%SERVER_DIR%
 scp %LOCAL_FILE% %SERVER_USER%@%SERVER_IP%:%SERVER_DIR%
 
 echo Extracting %LOCAL_FILE% on server and creating backup
-ssh %SERVER_USER%@%SERVER_IP% "cd %SERVER_DIR%  && if [ ! -f %BACKUP_FILE%.tar.gz ]; tar -czf %BACKUP_FILE%.tar.gz dist; else echo Backup folder %BACKUP_FILE% already exists. Skipping backup; fi && tar xzvf %LOCAL_FILE% > /dev/null 2>&1"
+ssh %SERVER_USER%@%SERVER_IP% "cd %SERVER_DIR%  && if [ ! -f %BACKUP_FILE%.tar.gz ]; then echo Backup file %BACKUP_FILE% created; tar -czf %BACKUP_FILE%.tar.gz dist; else echo Backup file %BACKUP_FILE% already exists. Skipping backup; fi && tar xzvf %LOCAL_FILE% > /dev/null 2>&1"
 
 echo Deployment complete!
 exit
