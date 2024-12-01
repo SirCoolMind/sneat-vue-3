@@ -41,7 +41,7 @@ const errorMessages = ref({})
 const defaultRecord = {
   money_subcategory : null,
   money_category : null,
-  amount : 0.00,
+  amount : '',
   transaction_date : new Date().toISOString(),
   description : '',
 };
