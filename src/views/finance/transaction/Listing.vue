@@ -75,7 +75,7 @@ onMounted(() => {
 
 const breadcrumbs = ref([
   {
-    title: 'Photocard',
+    title: 'Transaction Listing',
     disabled: true,
     show: true,
     route: '',

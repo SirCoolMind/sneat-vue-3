@@ -190,7 +190,7 @@ const breadcrumbs = ref([
               :readonly="true"
               :value="getValue(record, 'category.name')"
               prepend-inner-icon="bx-user"
-              label="Era"
+              label="Category"
             />
             <CategoryLookup
               v-else
@@ -213,7 +213,7 @@ const breadcrumbs = ref([
               :readonly="true"
               :value="getValue(record, 'subcategory.name')"
               prepend-inner-icon="bx-user"
-              label="Era"
+              label="Sub-Category"
             />
             <SubCategoryLookup
               v-else
