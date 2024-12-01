@@ -12,7 +12,7 @@
     "postinstall": "npm run build:icons",
     "build-zip": "pnpm run build && pnpm run dist-zip",
     "build-deploy": "pnpm run build && pnpm run dist-zip && pnpm run deploy",
-    "dist-zip": "node -e \"require('tar').create({ gzip: true, file: 'vuetemplate.tar.gz' }, ['dist']).then(() => console.log('dist.tar.gz created outside dist'));\"",
+    "dist-zip": "node -e \"require('tar').create({ gzip: true, file: 'vuetemplate.tar.gz' }, ['dist']).then(() => console.log('vuetemplate.tar.gz created outside dist'));\"",
     "deploy": "deploy-dist.bat"
   },
   "dependencies": {
