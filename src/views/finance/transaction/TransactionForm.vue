@@ -42,7 +42,7 @@ const defaultRecord = {
   money_subcategory : null,
   money_category : null,
   amount : 0.00,
-  transaction_date : Date(),
+  transaction_date : new Date().toISOString(),
   description : '',
 };
 const record = ref({...defaultRecord});
@@ -79,12 +79,9 @@ const saveData = async () => {
       // Skip keys if necessary
       if (['img'].includes(key)) return;
 
-      console.log(value);
-
+      // console.log(value);
       appendFormData(formData, key, value);
     });
-
-    console.log(formData.value);
 
     errorMessages.value = {} //reset error msg
     let url= `${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`;

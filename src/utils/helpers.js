@@ -253,6 +253,9 @@ export function appendFormData(formData, key, value) {
     value.forEach((item, index) => {
       appendFormData(formData, `${key}[${index}]`, item);
     });
+  } else if (value instanceof Date) {
+    // Format Date objects as ISO strings
+    formData.append(key, value.toISOString());
   } else if (value && typeof value === 'object' && !(value instanceof File)) {
     // Handle nested objects (excluding File objects)
     Object.entries(value).forEach(([nestedKey, nestedValue]) => {
