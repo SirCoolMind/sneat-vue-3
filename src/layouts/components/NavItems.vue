@@ -72,9 +72,9 @@ const navItems = [
         to: '/finance/transaction',
       },
       {
-        title: 'Data Setup',
+        title: 'Setup Category',
         icon: 'bx-wrench',
-        to: '/finance/transaction',
+        to: '/finance/setup-category',
       },
     ]
   },
