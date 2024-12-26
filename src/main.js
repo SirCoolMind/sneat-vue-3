@@ -10,11 +10,13 @@ import '@styles/styles.scss'
 // Create vue app
 const app = createApp(App)
 
-// NProgress (loading bar) and make it globally available
-import NProgress from 'nprogress'
+// NProgress (loading bar)
 import '../node_modules/nprogress/nprogress.css'
-app.config.globalProperties.$nprogress = NProgress;
-
+// doesn't work in composition API
+// and make it globally available
+// Ex: this.$nprogress.start(); this.$nprogress.done();
+// import NProgress from 'nprogress'
+// app.config.globalProperties.nprogress = NProgress;
 
 // Register plugins
 registerPlugins(app)
