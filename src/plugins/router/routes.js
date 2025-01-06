@@ -72,6 +72,16 @@ export const routes = [
         name: 'finance.setup-category.view',
         component: () => import('@/views/finance/setup-category/View.vue'),
       },
+      {
+        path: 'finance/setup-account',
+        name: 'finance.setup-account.listing',
+        component: () => import('@/views/finance/setup-account/Listing.vue'),
+      },
+      {
+        path: 'finance/setup-account/:account_id',
+        name: 'finance.setup-account.view',
+        component: () => import('@/views/finance/setup-account/View.vue'),
+      },
     ],
   },
   {

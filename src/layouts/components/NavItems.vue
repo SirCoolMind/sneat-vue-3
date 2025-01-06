@@ -76,6 +76,11 @@ const navItems = [
         icon: 'bx-wrench',
         to: '/finance/setup-category',
       },
+      {
+        title: 'Setup Account',
+        icon: 'bx-wrench',
+        to: '/finance/setup-account',
+      },
     ]
   },
   {
