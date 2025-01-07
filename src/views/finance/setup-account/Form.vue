@@ -85,6 +85,7 @@ const saveData = async () => {
     // console.log(response)
 
     record.value = response.data.data;
+    recordId.value = record.value.id;
     mode.value = modeView; // reset back to view
 
     Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
