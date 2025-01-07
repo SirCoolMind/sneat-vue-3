@@ -10,9 +10,9 @@
       item-value="id"
       placeholder="Select an option"
       :return-object="returnObject"
-      :error-messages="errorMessages"
+      :error-messages="error"
       :menu-props="{ fixed: true, nudgeBottom: 10, maxHeight: 300 }"
-      :hide-details="!errorMessages"
+      :hide-details="!error"
       :prepend-inner-icon="prependInnerIcon"
       :label="label"
     >
@@ -35,7 +35,7 @@ export default {
     },
     label: String,
     prependInnerIcon: String,
-    errorMessages: Array,
+    error: Array,
     hideDetails: {
       type: Boolean, default: false,
     },
