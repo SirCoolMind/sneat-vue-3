@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CategoryLookup from '../lookup/CategoryLookup.vue';
+import FinanceTypeLookup from '../lookup/FinanceTypeLookup.vue';
 import SubCategoryLookup from '../lookup/SubCategoryLookup.vue';
 
 const router = useRouter();
@@ -44,6 +45,7 @@ const defaultRecord = {
   amount : '',
   transaction_date : new Date().toISOString(),
   description : '',
+  type : { id: "EXPENSE", name: "Expense" },
 };
 const record = ref({...defaultRecord});
 
@@ -144,6 +146,32 @@ const breadcrumbs = ref([
         <!-- <h1>Current Mode: {{ mode }}</h1>
         <h1>Current RecordId: {{ recordId }}</h1>
         <h1>Current RecordId: {{ record }}</h1> -->
+        <VRow>
+
+          <VCol md="6" cols="12">
+            <VTextField
+              v-if="!canEdit()"
+              :readonly="true"
+              :value="getValue(record, 'type.name')"
+              prepend-inner-icon="bx-user"
+              label="Type"
+            />
+            <FinanceTypeLookup
+              v-else
+              v-model="record.type" 
+              :dense="true"
+              :box="true"
+              :outline="true"
+              :single-line="false"
+              class="thin-border"
+              :return-object="true"
+              :error="getValue(errorMessages, 'type.id')"
+              prepend-inner-icon="bx-user"
+              label="Type"
+            ></FinanceTypeLookup>
+          </VCol>
+
+        </VRow>
         <VRow>
 
           <VCol md="6" cols="12">
