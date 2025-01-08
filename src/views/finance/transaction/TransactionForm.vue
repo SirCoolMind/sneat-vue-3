@@ -214,7 +214,7 @@ const breadcrumbs = ref([
             <VTextField
               v-if="!canEdit()"
               :readonly="true"
-              :value="getValue(record, 'category.name')"
+              :value="getValue(record, 'money_category.name')"
               prepend-inner-icon="bx-user"
               label="Category"
             />
@@ -237,7 +237,7 @@ const breadcrumbs = ref([
             <VTextField
               v-if="!canEdit()"
               :readonly="true"
-              :value="getValue(record, 'subcategory.name')"
+              :value="getValue(record, 'money_subcategory.name')"
               prepend-inner-icon="bx-user"
               label="Sub-Category"
             />
