@@ -53,6 +53,11 @@ export const routes = [
         component: () => import('@/views/kpop-collection/data-setup/View.vue'),
       },
       {
+        path: 'finance/dashboard',
+        name: 'finance.transaction.dashboard',
+        component: () => import('@/views/finance/dashboard/Main.vue'),
+      },
+      {
         path: 'finance/transaction',
         name: 'finance.transaction.item.listing',
         component: () => import('@/views/finance/transaction/Listing.vue'),

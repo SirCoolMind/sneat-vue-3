@@ -62,6 +62,11 @@ const navItems = [
     icon: 'bx-collection',
     children: [
       {
+        title: 'Finance Dashboard',
+        icon: 'bx-board',
+        to: '/finance/dashboard',
+      },
+      {
         title: 'New Transaction',
         icon: 'bx-collection',
         to: '/finance/transaction/new',
