@@ -18,6 +18,11 @@ import '../node_modules/nprogress/nprogress.css'
 // import NProgress from 'nprogress'
 // app.config.globalProperties.nprogress = NProgress;
 
+// Vuepic/VueDatePicker
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+app.component('VueDatePicker', VueDatePicker);
+
 // Register plugins
 registerPlugins(app)
 
