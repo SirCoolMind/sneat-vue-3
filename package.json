@@ -33,7 +33,7 @@
     "prismjs": "^1.29.0",
     "roboto-fontface": "^0.10.0",
     "sweetalert2": "^11.14.0",
-    "vue": "^3.3.4",
+    "vue": "^3.5.13",
     "vue-filepond": "^7.0.4",
     "vue-flatpickr-component": "11.0.5",
     "vue-prism-component": "^2.0.0",
