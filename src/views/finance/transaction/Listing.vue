@@ -2,6 +2,7 @@
 import { getDateFromISO, getValue } from '@/utils/helpers';
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
+import { VDateInput } from 'vuetify/labs/components';
 
 // Define reactive state variables
 const headers = ref([
@@ -101,44 +102,63 @@ const breadcrumbs = ref([
             </VCol>
           </VRow>
         </template>
-        <VDataTableServer
-          v-model:items-per-page="itemsPerPage"
-          :headers="headers"
-          :items="serverItems"
-          :items-length="totalItems"
-          :loading="loading"
-          :search="filter.search"
-          item-value="id"
-          @update:options="getTablesData"
-          :items-per-page-options="[5,10,30]"
-        >
-          <template v-slot:item="{item, index}">
-            <tr>
-              <td>
-                {{ getDateFromISO(getValue(item, 'transaction_date')) }}
-              </td>
-              <td>
-                {{ getValue(item, 'amount') }}
-              </td>
-              <td>
-                {{ getValue(item, 'money_category.name') }}
-              </td>
-              <td>
-                {{ getValue(item, 'money_subcategory.name') }}
-              </td>
-              <td>
-                <!-- <RouterLink 
-                  :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
-                >{{ getValue(item, 'name') }}</RouterLink> -->
-                <VBtn 
-                  :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
-                  prepend-icon="bx-show"
-                  text="View"
-                ></VBtn>
-              </td>
-            </tr>
-          </template>
-        </VDataTableServer>
+        <VCardText>  
+          <VRow align="center">
+            <VCol md="4" cols="12">
+              <!-- Filter Date Range -->
+              <div class="d-flex">
+                <VDateInput
+                v-model="dateRange"
+                label="Select range"
+                max-width="368"
+                multiple="range"
+                ></VDateInput>
+              </div>
+              <VCol md="12" cols="12">
+                {{ filter.start_date }}
+              </VCol>
+              <VCol md="12" cols="12">
+                {{ filter.end_date }}
+              </VCol>
+            </VCol>
+          </VRow>
+          <VDataTableServer
+            v-model:items-per-page="itemsPerPage"
+            :headers="headers"
+            :items="serverItems"
+            :items-length="totalItems"
+            :loading="loading"
+            :search="filter.search"
+            item-value="id"
+            @update:options="getTablesData"
+            :items-per-page-options="[5,10,30]"
+          >
+            <template v-slot:item="{item, index}">
+              <tr>
+                <td>
+                  {{ getDateFromISO(getValue(item, 'transaction_date')) }}
+                </td>
+                <td>
+                  {{ getValue(item, 'amount') }}
+                </td>
+                <td>
+                  {{ getValue(item, 'money_category.name') }}
+                </td>
+                <td>
+                  {{ getValue(item, 'money_subcategory.name') }}
+                </td>
+                <td>
+                  <VBtn 
+                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
+                    prepend-icon="bx-show"
+                    text="View"
+                  ></VBtn>
+                </td>
+              </tr>
+            </template>
+          </VDataTableServer>
+          
+        </VCardText>
       </VCard>
     </VCol>
   </VRow>
