@@ -37,16 +37,33 @@ const itemsPerPage = ref(5)
 const loading = ref(true)
 const serverItems = ref([])
 const totalItems = ref(0)
-const name = ref('')
-const filter = ref([
-  name => ''
-])
+const dateRange = ref(null)
+const filter = ref({
+  start_date: '',
+  end_date: '',
+})
 
-// Watchers to update search based on name and calories changes
-watch([name], () => {
-  filter.name.value = String(Date.now())
-  console.log("name watch")
-  console.log(filter.value)
+watch([dateRange], () => {
+  // console.log("dateRange watch")
+  // console.log(dateRange.value)
+
+  if (!Array.isArray(dateRange.value)) {
+    throw new Error("Input must be an array");
+  }
+
+  // Handle cases based on array length
+  if (dateRange.value.length === 0) {
+    filter.value.start_date = null;
+    filter.value.end_date = null;
+  } else if (dateRange.value.length === 1) {
+    filter.value.start_date = dateRange.value[0];
+    filter.value.end_date = dateRange.value[0];
+  } else {
+    filter.value.start_date = dateRange.value[0];
+    filter.value.end_date = dateRange.value[dateRange.value.length - 1];
+  }
+  
+  getTablesData({ page: 1, itemsPerPage: itemsPerPage.value });
 })
 
 const getTablesData = async ({ page, itemsPerPage, sortBy = '' }) => {
@@ -56,7 +73,7 @@ const getTablesData = async ({ page, itemsPerPage, sortBy = '' }) => {
     console.log(`Fetching listing data`);
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`, {
       params: {
-        page, rows_per_page: itemsPerPage, sort_by: sortBy, filter: name.value
+        page, rows_per_page: itemsPerPage, sort_by: sortBy, filter: filter.value
       },
     })
     // console.log(response);
