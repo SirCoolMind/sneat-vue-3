@@ -27,8 +27,9 @@ watch(mode, (newMode, oldMode) => {
 });
 
 const recordId = ref(route.params.kpop_item_id || 'new');
-watch(recordId, (newId, oldId) => {
+watch(() => route.params.kpop_item_id, (newId) => {
   console.log(`Record ID changed from ${oldId} to ${newId}`);
+  recordId.value = newId || 'new';
   mode.value = 'view';
   record.value = {...defaultRecord};
   getData();
