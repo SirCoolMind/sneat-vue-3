@@ -101,44 +101,44 @@ const breadcrumbs = ref([
             </VCol>
           </VRow>
         </template>
-          <VDataTableServer
-            v-model:items-per-page="itemsPerPage"
-            :headers="headers"
-            :items="serverItems"
-            :items-length="totalItems"
-            :loading="loading"
-            :search="filter.search"
-            item-value="id"
-            @update:options="getTablesData"
-            :items-per-page-options="[5,10,30]"
-          >
-            <template v-slot:item="{item, index}">
-              <tr>
-                <td>
-                  {{ getDateFromISO(getValue(item, 'transaction_date')) }}
-                </td>
-                <td>
-                  {{ getValue(item, 'amount') }}
-                </td>
-                <td>
-                  {{ getValue(item, 'money_category.name') }}
-                </td>
-                <td>
-                  {{ getValue(item, 'money_subcategory.name') }}
-                </td>
-                <td>
-                  <!-- <RouterLink 
-                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
-                  >{{ getValue(item, 'name') }}</RouterLink> -->
-                  <VBtn 
-                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
-                    prepend-icon="bx-show"
-                    text="View"
-                  ></VBtn>
-                </td>
-              </tr>
-            </template>
-          </VDataTableServer>
+        <VDataTableServer
+          v-model:items-per-page="itemsPerPage"
+          :headers="headers"
+          :items="serverItems"
+          :items-length="totalItems"
+          :loading="loading"
+          :search="filter.search"
+          item-value="id"
+          @update:options="getTablesData"
+          :items-per-page-options="[5,10,30]"
+        >
+          <template v-slot:item="{item, index}">
+            <tr>
+              <td>
+                {{ getDateFromISO(getValue(item, 'transaction_date')) }}
+              </td>
+              <td>
+                {{ getValue(item, 'amount') }}
+              </td>
+              <td>
+                {{ getValue(item, 'money_category.name') }}
+              </td>
+              <td>
+                {{ getValue(item, 'money_subcategory.name') }}
+              </td>
+              <td>
+                <!-- <RouterLink 
+                  :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
+                >{{ getValue(item, 'name') }}</RouterLink> -->
+                <VBtn 
+                  :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
+                  prepend-icon="bx-show"
+                  text="View"
+                ></VBtn>
+              </td>
+            </tr>
+          </template>
+        </VDataTableServer>
       </VCard>
     </VCol>
   </VRow>
