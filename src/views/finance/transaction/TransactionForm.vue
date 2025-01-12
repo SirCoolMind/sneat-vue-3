@@ -185,14 +185,19 @@ const breadcrumbs = ref([
               hide-actions
               placeholder="dd/mm/yyyy" 
             /> -->
-            <DateInputField
+            <!-- <DateInputField
               v-model="record.transaction_date"
               :rules="[(v) => !!v || 'Date is required!']"
               clearable
               hide-details="auto"
               color="primary"
               label="Date"
-            ></DateInputField>  
+            ></DateInputField>   -->
+            <VueDatePicker 
+              v-model="record.transaction_date"
+              teleport
+              :is-24="false"
+            ></VueDatePicker>
           </VCol>
            
           <VCol md="6" cols="12">
