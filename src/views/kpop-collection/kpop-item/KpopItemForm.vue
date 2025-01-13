@@ -1,7 +1,7 @@
 <script setup>
 import { appendFormData, getValue } from '@/utils/helpers';
 import axios from 'axios';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import KpopEraLookup from '../lookup/KpopEraLookup.vue';

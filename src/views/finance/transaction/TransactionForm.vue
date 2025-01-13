@@ -1,7 +1,7 @@
 <script setup>
 import { appendFormData, getValue, isNumericMoney } from '@/utils/helpers';
 import axios from 'axios';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CategoryLookup from '../lookup/CategoryLookup.vue';
