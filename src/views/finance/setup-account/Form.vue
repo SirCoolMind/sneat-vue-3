@@ -24,15 +24,15 @@ watch(mode, (newMode, oldMode) => {
 });
 
 const recordId = ref(route.params.account_id || 'new');
-watch(() => route.params.account_id, (newId) => {
+if(recordId.value == 'new') //change to edit mode if initial is new
+  mode.value = modeEdit;
+watch(() => route.params.account_id, (newId, oldId) => {
   console.log(`Record ID changed from ${oldId} to ${newId}`);
   recordId.value = newId || 'new';
-  mode.value = 'view';
+  mode.value = recordId.value == 'new' ? modeEdit : modeView;
   record.value = {...defaultRecord};
   getData();
 });
-if(recordId.value == 'new') //change to edit mode if new
-  mode.value = modeEdit;
 
 // Data related function
 const errorMessages = ref({})
