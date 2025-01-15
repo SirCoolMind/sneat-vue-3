@@ -87,7 +87,7 @@ const breadcrumbs = ref([
           :breadcrumbs="breadcrumbs"
           :buttonTo="{name: 'kpop-collection.item.view', params: {kpop_item_id: 'new'}}"
         />
-        <template v-slot:text>
+        <VCardText>  
           <VDataTableServer
             v-model:items-per-page="itemsPerPage"
             :headers="headers"
@@ -129,7 +129,7 @@ const breadcrumbs = ref([
               </tr>
             </template>
           </VDataTableServer>
-        </template>
+        </VCardText>
       </VCard>
     </VCol>
   </VRow>

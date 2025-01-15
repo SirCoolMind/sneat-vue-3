@@ -108,7 +108,7 @@ const breadcrumbs = ref([
           :breadcrumbs="breadcrumbs"
           :buttonTo="{name: 'finance.transaction.item.view', params: {kpop_item_id: 'new'}}"
         />
-        <template v-slot:text>
+        <VCardText>  
           <VRow align="center">
             <VCol md="4" cols="12">
               <!-- Filter Date Range -->
@@ -165,7 +165,7 @@ const breadcrumbs = ref([
               </tr>
             </template>
           </VDataTableServer>
-        </template>
+        </VCardText>
       </VCard>
     </VCol>
   </VRow>
