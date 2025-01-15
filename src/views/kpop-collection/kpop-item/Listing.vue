@@ -83,20 +83,11 @@ const breadcrumbs = ref([
   <VRow>
     <VCol cols="12">
       <VCard>
-        <template v-slot:title>
-          <VRow align="center"> 
-            <VCol md="4" cols="12">
-              <Breadcrumbs :items="breadcrumbs"/>        
-            </VCol>
-            <VCol md="8" cols="12" align="right">
-              <v-fab-transition>
-                <VBtn 
-                  :to="{name: 'kpop-collection.item.view', params: {kpop_item_id: 'new'}}"
-                >New</VBtn>
-              </v-fab-transition>
-            </VCol>
-          </VRow>
-        </template>
+        <CardHeaderDefault
+          :breadcrumbs="breadcrumbs"
+          :buttonTo="{name: 'kpop-collection.item.view', params: {kpop_item_id: 'new'}}"
+        />
+        <template v-slot:text>
           <VDataTableServer
             v-model:items-per-page="itemsPerPage"
             :headers="headers"
@@ -138,6 +129,7 @@ const breadcrumbs = ref([
               </tr>
             </template>
           </VDataTableServer>
+        </template>
       </VCard>
     </VCol>
   </VRow>

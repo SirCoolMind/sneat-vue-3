@@ -104,21 +104,11 @@ const breadcrumbs = ref([
   <VRow>
     <VCol cols="12">
       <VCard>
-        <template v-slot:title>
-          <VRow align="center"> 
-            <VCol md="4" cols="12">
-              <Breadcrumbs :items="breadcrumbs"/>        
-            </VCol>
-            <VCol md="8" cols="12" align="right">
-              <v-fab-transition>
-                <VBtn 
-                  :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: 'new'}}"
-                >New</VBtn>
-              </v-fab-transition>
-            </VCol>
-          </VRow>
-        </template>
-        <VCardText>  
+        <CardHeaderDefault
+          :breadcrumbs="breadcrumbs"
+          :buttonTo="{name: 'finance.transaction.item.view', params: {kpop_item_id: 'new'}}"
+        />
+        <template v-slot:text>
           <VRow align="center">
             <VCol md="4" cols="12">
               <!-- Filter Date Range -->
@@ -175,8 +165,7 @@ const breadcrumbs = ref([
               </tr>
             </template>
           </VDataTableServer>
-          
-        </VCardText>
+        </template>
       </VCard>
     </VCol>
   </VRow>
