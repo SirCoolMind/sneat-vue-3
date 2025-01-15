@@ -2,7 +2,6 @@
 import { getDateFromISO, getValue } from '@/utils/helpers';
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
-import { VDateInput } from 'vuetify/labs/components';
 
 // Define reactive state variables
 const headers = ref([
@@ -124,12 +123,14 @@ const breadcrumbs = ref([
             <VCol md="4" cols="12">
               <!-- Filter Date Range -->
               <div class="d-flex">
-                <VDateInput
-                v-model="dateRange"
-                label="Select range"
-                max-width="368"
-                multiple="range"
-                ></VDateInput>
+                <VueDatePicker 
+                  v-model="dateRange"
+                  teleport
+                  range
+                  inline
+                  :enable-time-picker="false"
+                  auto-apply
+                ></VueDatePicker>
               </div>
               <VCol md="12" cols="12">
                 {{ filter.start_date }}
