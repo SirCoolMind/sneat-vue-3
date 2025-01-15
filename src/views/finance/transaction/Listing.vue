@@ -132,12 +132,12 @@ const breadcrumbs = ref([
                   auto-apply
                 ></VueDatePicker>
               </div>
-              <VCol md="12" cols="12">
+              <!-- <VCol md="12" cols="12">
                 {{ filter.start_date }}
               </VCol>
               <VCol md="12" cols="12">
                 {{ filter.end_date }}
-              </VCol>
+              </VCol> -->
             </VCol>
           </VRow>
           <VDataTableServer
