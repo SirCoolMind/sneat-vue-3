@@ -75,6 +75,12 @@ const breadcrumbs = ref([
     show: true,
     route: '',
   },
+  {
+    title: 'Listing',
+    disabled: true,
+    show: true,
+    route: '',
+  },
 ]);
 </script>
 

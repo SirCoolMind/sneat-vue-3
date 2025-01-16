@@ -92,7 +92,13 @@ onMounted(() => {
 
 const breadcrumbs = ref([
   {
-    title: 'Transaction Listing',
+    title: 'Transaction',
+    disabled: true,
+    show: true,
+    route: '',
+  },
+  {
+    title: 'Listing',
     disabled: true,
     show: true,
     route: '',
