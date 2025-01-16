@@ -266,3 +266,14 @@ export function appendFormData(formData, key, value) {
     formData.append(key, value);
   }
 }
+
+/**
+ * Function to update breadcrumb title
+ */
+export function updateBreadcrumbTitle(breadcrumbsRef, index, newValue) {
+  if (Array.isArray(breadcrumbsRef.value) && breadcrumbsRef.value[index]) {
+    breadcrumbsRef.value[index].title = newValue; // Directly modify the reactive array
+  } else {
+    console.warn('Invalid breadcrumb array or index.');
+  }
+}
