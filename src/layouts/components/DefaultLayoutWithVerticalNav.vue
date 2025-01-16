@@ -69,7 +69,7 @@ import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
         <!-- eslint-enable -->
 
         <h1 class="app-logo-title">
-          project tracker
+          project <br> tracker
         </h1>
       </RouterLink>
 
