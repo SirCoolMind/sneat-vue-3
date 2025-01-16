@@ -6,11 +6,6 @@ import { onMounted, ref, watch } from 'vue';
 // Define reactive state variables
 const headers = ref([
   { 
-    title: 'Date', 
-    key: 'date', 
-    align: 'start' 
-  },
-  { 
     title: 'Total (RM)', 
     key: 'money', 
     align: 'start' 
@@ -18,11 +13,6 @@ const headers = ref([
   { 
     title: 'Category', 
     key: 'category', 
-    align: 'start' 
-  },
-  { 
-    title: 'Subcategory', 
-    key: 'subcategory', 
     align: 'start' 
   },
   { 
@@ -136,8 +126,7 @@ const breadcrumbs = ref([
               </VCol> -->
             </VCol>
           </VRow>
-          <VDataTableServer
-            v-model:items-per-page="itemsPerPage"
+          <VDataTable
             :headers="headers"
             :items="serverItems"
             :items-length="totalItems"
@@ -146,19 +135,37 @@ const breadcrumbs = ref([
             item-value="id"
             @update:options="getTablesData"
             :items-per-page-options="[5,10,30]"
+            :group-by="[
+              {
+                key: 'transaction_date',
+                order: 'asc',
+              },
+            ]"
           >
+            <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+              <tr>
+                <td :colspan="columns.length">
+                  <VBtn
+                    :icon="isGroupOpen(item) ? '$expand' : '$next'"
+                    size="small"
+                    variant="text"
+                    @click="toggleGroup(item)"
+                    :ref="item.value" :data-open="isGroupOpen"
+                  ></VBtn>
+                  {{ getDateFromISO(item.value) }}
+                </td>
+              </tr>
+            </template>
             <template v-slot:item="{item, index}">
               <tr>
-                <td>
-                  {{ getDateFromISO(getValue(item, 'transaction_date')) }}
-                </td>
+                <!-- Reserved for group column -->
+                <td></td>
                 <td>
                   {{ getValue(item, 'amount') }}
                 </td>
                 <td>
                   {{ getValue(item, 'money_category.name') }}
-                </td>
-                <td>
+                  <br>
                   {{ getValue(item, 'money_subcategory.name') }}
                 </td>
                 <td>
@@ -170,7 +177,7 @@ const breadcrumbs = ref([
                 </td>
               </tr>
             </template>
-          </VDataTableServer>
+          </VDataTable>
         </VCardText>
       </VCard>
     </VCol>
