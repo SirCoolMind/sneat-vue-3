@@ -1,7 +1,7 @@
 <template>
   <VCardItem class="py-4 mb-4" style="border-bottom: 1px solid gray;">
     <VCardTitle>
-      <VContainer class="pa-0">
+      <!-- <VContainer class="pa-0"> -->
         <VRow class="d-flex align-center" dense>
           <VCol cols="9" class="overflow-hidden">
             <Breadcrumbs :items="breadcrumbs" />
@@ -12,7 +12,7 @@
             </VFabTransition>
           </VCol>
         </VRow>
-      </VContainer>
+      <!-- </VContainer> -->
     </VCardTitle>
   </VCardItem>
 </template>
