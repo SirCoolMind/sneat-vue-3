@@ -6,6 +6,11 @@ import { onMounted, ref, watch } from 'vue';
 // Define reactive state variables
 const headers = ref([
   { 
+    title: "", 
+    key: "data-table-group", 
+    align: ' d-none' 
+  },
+  { 
     title: 'Total (RM)', 
     key: 'money', 
     align: 'start' 
@@ -129,12 +134,12 @@ const breadcrumbs = ref([
           <VDataTable
             :headers="headers"
             :items="serverItems"
-            :items-length="totalItems"
             :loading="loading"
             :search="filter.search"
             item-value="id"
             @update:options="getTablesData"
-            :items-per-page-options="[5,10,30]"
+            hide-default-footer
+            disable-pagination
             :group-by="[
               {
                 key: 'transaction_date',
@@ -143,23 +148,15 @@ const breadcrumbs = ref([
             ]"
           >
             <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+              <template :ref="(el)=>{ if (!isGroupOpen(item)) toggleGroup(item); }"></template>
               <tr>
-                <td :colspan="columns.length">
-                  <VBtn
-                    :icon="isGroupOpen(item) ? '$expand' : '$next'"
-                    size="small"
-                    variant="text"
-                    @click="toggleGroup(item)"
-                    :ref="item.value" :data-open="isGroupOpen"
-                  ></VBtn>
+                <td :colspan="columns.length" style="height: 30px;" >
                   {{ getDateFromISO(item.value) }}
                 </td>
               </tr>
             </template>
             <template v-slot:item="{item, index}">
               <tr>
-                <!-- Reserved for group column -->
-                <td></td>
                 <td>
                   {{ getValue(item, 'amount') }}
                 </td>
