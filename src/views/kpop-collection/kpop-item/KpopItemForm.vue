@@ -1,5 +1,5 @@
 <script setup>
-import { appendFormData, getValue } from '@/utils/helpers';
+import { appendFormData, getValue, updateBreadcrumbTitle } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
@@ -58,8 +58,10 @@ onMounted(() => {
 });
 
 const getData = async () => {
-  if(recordId.value == 'new')
+  if(recordId.value == 'new') {
+    updateBreadcrumbTitle(breadcrumbs, 1, 'New');
     return;
+  }
 
   try {
     console.log(`Fetching data for record ID: ${recordId.value}`);
@@ -67,6 +69,11 @@ const getData = async () => {
     record.value = response.data.data;
     record.value.photocard_image_upload = [];
     // console.log(record.value)
+
+    const newTitle = record.value
+      ? getValue(record.value, 'kpop_era_id.name', '') + ' (' + getValue(record.value, 'kpop_era_version_id.name', '') + ' - ' + getValue(record.value, 'kpop_era_version_id.name', '') + ')'
+      : '...';
+    updateBreadcrumbTitle(breadcrumbs, 1, newTitle);
 
   } catch (error) {
     // console.error('saveData Function failed:', error);
@@ -123,11 +130,6 @@ const checkIfAvailable = (images = []) => {
   return images.some(image => getValue(image,'is_available') == true);
 };
 
-const title = computed(() => {
-  return record 
-    ? getValue(record.value, 'kpop_era_id.name', '') + ' (' + getValue(record.value, 'kpop_era_version_id.name', '') + ' - ' + getValue(record.value, 'kpop_era_version_id.name', '') + ')'
-    : '';
-})
 const breadcrumbs = ref([
   {
     title: 'Photocard',
@@ -136,9 +138,10 @@ const breadcrumbs = ref([
     route: { name: 'kpop-collection.item.listing'},
   },
   {
-    title: title,
+    title: '...',
     disabled: true,
     show: true,
+    route: '',
   }
 ]);
 </script>

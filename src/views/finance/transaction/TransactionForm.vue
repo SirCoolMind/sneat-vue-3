@@ -1,5 +1,5 @@
 <script setup>
-import { appendFormData, getValue, isNumericMoney } from '@/utils/helpers';
+import { appendFormData, getValue, isNumericMoney, updateBreadcrumbTitle } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
@@ -54,8 +54,10 @@ onMounted(() => {
 });
 
 const getData = async () => {
-  if(recordId.value == 'new')
+  if(recordId.value == 'new') {
+    updateBreadcrumbTitle(breadcrumbs, 1, 'New');
     return;
+  }
 
   try {
     console.log(`Fetching data for record ID: ${recordId.value}`);
@@ -63,6 +65,9 @@ const getData = async () => {
     record.value = response.data.data;
     record.value.photocard_image_upload = [];
     // console.log(record.value)
+
+    const newTitle = record.value.id || '...';
+    updateBreadcrumbTitle(breadcrumbs, 1, newTitle);
 
   } catch (error) {
     // console.error('saveData Function failed:', error);
@@ -115,6 +120,12 @@ const breadcrumbs = ref([
     disabled: false,
     show: true,
     route: { name: 'finance.transaction.item.listing'},
+  },
+  {
+    title: '...',
+    disabled: true,
+    show: true,
+    route: '',
   },
 ]);
 </script>

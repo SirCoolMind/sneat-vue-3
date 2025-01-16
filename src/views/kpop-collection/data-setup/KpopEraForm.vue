@@ -1,5 +1,5 @@
 <script setup>
-import { appendFormData, getValue } from '@/utils/helpers';
+import { appendFormData, getValue, updateBreadcrumbTitle } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
@@ -48,14 +48,19 @@ onMounted(() => {
 });
 
 const getData = async () => {
-  if(recordId.value == 'new')
+  if(recordId.value == 'new') {
+    updateBreadcrumbTitle(breadcrumbs, 1, 'New');
     return;
+  }
 
   try {
     console.log(`Fetching data for record ID: ${recordId.value}`);
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/kpop/v1/admin/kpop-era/${recordId.value}`)
     record.value = response.data.data;
     // console.log(record.value)
+
+    const newTitle = getValue(record.value, 'name', '...');
+    updateBreadcrumbTitle(breadcrumbs, 1, newTitle);
 
   } catch (error) {
     // console.error('saveData Function failed:', error);
@@ -100,12 +105,6 @@ const saveData = async () => {
     Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
-
-const title = computed(() => {
-  return record 
-    ? getValue(record.value, 'name', '')
-    : '';
-})
 const breadcrumbs = ref([
   {
     title: 'Data Setup - Era',
@@ -114,10 +113,11 @@ const breadcrumbs = ref([
     route: { name: 'kpop-collection.data-setup.listing'},
   },
   {
-    title: title,
+    title: '...',
     disabled: true,
     show: true,
-  }
+    route: '',
+  },
 ]);
 
 // Table CRUD
