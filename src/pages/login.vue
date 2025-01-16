@@ -70,14 +70,14 @@ const loginUser = async () => {
             >
             </div>
             <h1 class="app-logo-title">
-              sneat
+              project tracker
             </h1>
           </RouterLink>
         </VCardItem>
 
         <VCardText>
           <h4 class="text-h4 mb-1">
-            Welcome to Sneat! 👋🏻
+            Welcome! 👋🏻
           </h4>
           <p class="mb-0">
             Please sign-in to your account and start the adventure
