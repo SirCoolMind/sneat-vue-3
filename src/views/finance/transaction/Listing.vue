@@ -1,5 +1,5 @@
 <script setup>
-import { getDateFromISO, getValue } from '@/utils/helpers';
+import { formatMoney, getDateFromISO, getValue } from '@/utils/helpers';
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 
@@ -11,20 +11,28 @@ const headers = ref([
     align: ' d-none' 
   },
   { 
-    title: 'Total (RM)', 
+    title: 'Amount', 
     key: 'money', 
-    align: 'start' 
+    align: 'center',
+    maxWidth: "10"
   },
   { 
     title: 'Category', 
     key: 'category', 
-    align: 'start' 
+    align: 'center', 
+    maxWidth: "10"
   },
   { 
-    title: 'Action', 
-    key: 'version', 
-    align: 'start' 
+    title: 'Description', 
+    key: 'description', 
+    align: 'center', 
+    maxWidth: "10"
   },
+  // { 
+  //   title: 'Action', 
+  //   key: 'version', 
+  //   align: 'center' 
+  // },
 ])
 
 const itemsPerPage = ref(5)
@@ -161,21 +169,24 @@ const breadcrumbs = ref([
             </template>
             <template v-slot:item="{item, index}">
               <tr>
-                <td class="border">
-                  {{ getValue(item, 'amount') }}
+                <td class="border" style="white-space: nowrap;">
+                  {{ formatMoney(getValue(item, 'amount')) }}
                 </td>
                 <td class="border">
                   {{ getValue(item, 'money_category.name') }}
                   <br>
-                  {{ getValue(item, 'money_subcategory.name') }}
+                  ▪️{{ getValue(item, 'money_subcategory.name') }}
                 </td>
                 <td class="border">
-                  <VBtn 
+                  {{ getValue(item, 'description') }}
+                </td>
+                <!-- <td class="border" align="center">
+                  <VBtn
                     :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
                     prepend-icon="bx-show"
                     text="View"
                   ></VBtn>
-                </td>
+                </td> -->
               </tr>
             </template>
           </VDataTable>

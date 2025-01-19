@@ -123,6 +123,19 @@ export function isNumericMoney(evt, currentValue = '') {
 }
 
 /**
+ * Format value into currency
+ */
+export function formatMoney(value, unit = 'RM') {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  });
+
+  return formatter.format(value).replace("$", unit+' ').trim();
+}
+
+/**
  * format address
  */
 export function formatAddress(address) {
