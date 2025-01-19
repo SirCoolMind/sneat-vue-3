@@ -63,18 +63,21 @@ watch([dateRange], () => {
 })
 
 const getTablesData = async ({ page, itemsPerPage, sortBy = '' }) => {
-  
+
+  // Default sort order desc
+  if (!sortBy || Object.keys(sortBy).length === 0) {
+    sortBy = { 0: { key: 'date', order: 'desc' } };
+  }
   try {
     loading.value = true
     console.log(`Fetching listing data`);
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`, {
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v2/transaction`, {
       params: {
         page, rows_per_page: itemsPerPage, sort_by: sortBy, filter: filter.value
       },
     })
     // console.log(response);
     serverItems.value = response.data.data;
-    totalItems.value = response.data.meta.total;
     loading.value = false;
 
   } catch (error) {
