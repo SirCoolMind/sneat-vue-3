@@ -149,7 +149,7 @@ const breadcrumbs = ref([
             :group-by="[
               {
                 key: 'date',
-                order: 'asc',
+                order: 'desc',
               },
             ]"
           >
