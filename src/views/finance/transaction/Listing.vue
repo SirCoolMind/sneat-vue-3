@@ -132,6 +132,7 @@ const breadcrumbs = ref([
             </VCol>
           </VRow>
           <VDataTable
+            class="border-sm rounded mt-2"
             :headers="headers"
             :items="serverItems"
             :loading="loading"
@@ -150,22 +151,25 @@ const breadcrumbs = ref([
             <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
               <template :ref="(el)=>{ if (!isGroupOpen(item)) toggleGroup(item); }"></template>
               <tr>
-                <td :colspan="columns.length" style="height: 30px;" >
+                <td :colspan="columns.length" 
+                  class="border-sm" 
+                  style="height: 30px; background-color: #e7e7ff; border-color: rgba(var(--v-border-color), 0.25) !important;" 
+                >
                   {{ getDateFromISO(item.value) }}
                 </td>
               </tr>
             </template>
             <template v-slot:item="{item, index}">
               <tr>
-                <td>
+                <td class="border">
                   {{ getValue(item, 'amount') }}
                 </td>
-                <td>
+                <td class="border">
                   {{ getValue(item, 'money_category.name') }}
                   <br>
                   {{ getValue(item, 'money_subcategory.name') }}
                 </td>
-                <td>
+                <td class="border">
                   <VBtn 
                     :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
                     prepend-icon="bx-show"
