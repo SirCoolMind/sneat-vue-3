@@ -22,12 +22,6 @@ const headers = ref([
     align: 'center', 
     maxWidth: "10"
   },
-  { 
-    title: 'Description', 
-    key: 'description', 
-    align: 'center', 
-    maxWidth: "10"
-  },
   // { 
   //   title: 'Action', 
   //   key: 'version', 
@@ -151,7 +145,7 @@ const breadcrumbs = ref([
             disable-pagination
             :group-by="[
               {
-                key: 'transaction_date',
+                key: 'date',
                 order: 'asc',
               },
             ]"
@@ -177,7 +171,9 @@ const breadcrumbs = ref([
                   <br>
                   ▪️{{ getValue(item, 'money_subcategory.name') }}
                 </td>
-                <td class="border">
+              </tr>
+              <tr>    
+                <td class="border border-b-lg" colspan="2">
                   {{ getValue(item, 'description') }}
                 </td>
                 <!-- <td class="border" align="center">
