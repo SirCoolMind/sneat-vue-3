@@ -4,6 +4,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import AccountTypeLookup from '../lookup/AccountTypeLookup.vue';
 import CategoryLookup from '../lookup/CategoryLookup.vue';
 import FinanceTypeLookup from '../lookup/FinanceTypeLookup.vue';
 import SubCategoryLookup from '../lookup/SubCategoryLookup.vue';
@@ -40,6 +41,7 @@ watch(() => route.params.kpop_item_id, (newId, oldId) => {
 // Data related function
 const errorMessages = ref({})
 const defaultRecord = {
+  money_account : null,
   money_subcategory : null,
   money_category : null,
   amount : '',
@@ -182,6 +184,21 @@ const breadcrumbs = ref([
             ></FinanceTypeLookup>
           </VCol>
 
+          <VCol md="6" cols="12">
+            <VTextField
+              v-if="!canEdit()"
+              :readonly="true"
+              :value="getValue(record, 'money_account.name')"
+              prepend-inner-icon="bx-wallet-alt"
+              label="Type"
+            />
+            <AccountTypeLookup
+              v-else
+              v-model="record.money_account" 
+              :dense="true"
+              :box="true"
+              :outline="true"
+              :single-line="false"
         </VRow>
         <VRow>
 
