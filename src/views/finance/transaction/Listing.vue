@@ -11,14 +11,12 @@ const headers = ref([
     align: ' d-none' 
   },
   { 
-    title: 'Amount', 
-    key: 'money', 
+    title: 'Amount / Account',
     align: 'center',
     maxWidth: "10"
   },
   { 
-    title: 'Category', 
-    key: 'category', 
+    title: 'Category / Description',
     align: 'center', 
     maxWidth: "10"
   },
@@ -176,7 +174,10 @@ const breadcrumbs = ref([
                 </td>
               </tr>
               <tr>    
-                <td class="border border-b-lg" colspan="2">
+                <td class="border border-b-lg">
+                  <VIcon icon="bx-wallet-alt"></VIcon> {{ getValue(item, 'money_account.name') }}
+                </td>
+                <td class="border border-b-lg">
                   {{ getValue(item, 'description') }}
                 </td>
                 <!-- <td class="border" align="center">

@@ -166,7 +166,7 @@ const breadcrumbs = ref([
               v-if="!canEdit()"
               :readonly="true"
               :value="getValue(record, 'type.name')"
-              prepend-inner-icon="bx-user"
+              prepend-inner-icon="bx-category"
               label="Type"
             />
             <FinanceTypeLookup
@@ -179,7 +179,7 @@ const breadcrumbs = ref([
               class="thin-border"
               :return-object="true"
               :error="getValue(errorMessages, 'type.id')"
-              prepend-inner-icon="bx-user"
+              prepend-inner-icon="bx-category"
               label="Type"
             ></FinanceTypeLookup>
           </VCol>
@@ -199,27 +199,18 @@ const breadcrumbs = ref([
               :box="true"
               :outline="true"
               :single-line="false"
+              class="thin-border"
+              :return-object="true"
+              :error="getValue(errorMessages, 'money_account.id')"
+              prepend-inner-icon="bx-wallet-alt"
+              label="Account"
+            ></AccountTypeLookup>
+          </VCol>
+
         </VRow>
         <VRow>
 
           <VCol md="6" cols="12">
-            <!-- <VDateInput
-              :readonly="!canEdit()"
-              v-model="record.transaction_date"
-              prepend-inner-icon="bx-calendar"
-              label="Date"
-              :error-messages="getValue(errorMessages, 'transaction_date')"
-              hide-actions
-              placeholder="dd/mm/yyyy" 
-            /> -->
-            <!-- <DateInputField
-              v-model="record.transaction_date"
-              :rules="[(v) => !!v || 'Date is required!']"
-              clearable
-              hide-details="auto"
-              color="primary"
-              label="Date"
-            ></DateInputField>   -->
             <VueDatePicker 
               v-model="record.transaction_date"
               teleport
@@ -248,7 +239,7 @@ const breadcrumbs = ref([
               v-if="!canEdit()"
               :readonly="true"
               :value="getValue(record, 'money_category.name')"
-              prepend-inner-icon="bx-user"
+              prepend-inner-icon="bx-dialpad"
               label="Category"
             />
             <CategoryLookup
@@ -261,7 +252,7 @@ const breadcrumbs = ref([
               class="thin-border"
               :return-object="true"
               :error="getValue(errorMessages, 'money_category.id')"
-              prepend-inner-icon="bx-user"
+              prepend-inner-icon="bx-dialpad"
               label="Category"
             ></CategoryLookup>
           </VCol>
@@ -271,7 +262,7 @@ const breadcrumbs = ref([
               v-if="!canEdit()"
               :readonly="true"
               :value="getValue(record, 'money_subcategory.name')"
-              prepend-inner-icon="bx-user"
+              prepend-inner-icon="bx-dialpad-alt"
               label="Sub-Category"
             />
             <SubCategoryLookup
@@ -285,7 +276,7 @@ const breadcrumbs = ref([
               class="thin-border"
               :return-object="true"
               :error="getValue(errorMessages, 'money_subcategory.id')"
-              prepend-inner-icon="bx-user"
+              prepend-inner-icon="bx-dialpad-alt"
               label="Sub-Category"
               :readonly="!canEdit()"
             ></SubCategoryLookup>
@@ -297,7 +288,7 @@ const breadcrumbs = ref([
             <VTextarea
               :readonly="!canEdit()"
               v-model="record.description"
-              prepend-inner-icon="bx-envelope"
+              prepend-inner-icon="bx-text"
               label="Description"
               placeholder="..."
               :error-messages="getValue(errorMessages, 'description')"
