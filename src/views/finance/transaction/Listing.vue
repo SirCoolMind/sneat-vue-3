@@ -158,7 +158,7 @@ const breadcrumbs = ref([
                   class="border-sm" 
                   style="height: 30px; background-color: #e7e7ff; border-color: rgba(var(--v-border-color), 0.25) !important;" 
                 >
-                  {{ getDateFromISO(item.value) }}
+                  <b>{{ getDateFromISO(item.value, "Do MMM YYYY") }}</b>
                 </td>
               </tr>
             </template>
