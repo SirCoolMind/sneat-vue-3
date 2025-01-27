@@ -124,6 +124,7 @@ const breadcrumbs = ref([
                   inline
                   :enable-time-picker="false"
                   auto-apply
+                  six-weeks="fair"
                 ></VueDatePicker>
               </div>
               <!-- <VCol md="12" cols="12">
