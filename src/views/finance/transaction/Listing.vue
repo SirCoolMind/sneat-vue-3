@@ -29,6 +29,8 @@ const headers = ref([
   // },
 ])
 
+const totalIncome = ref('')
+const totalSpent = ref('')
 const itemsPerPage = ref(5)
 const loading = ref(true)
 const serverItems = ref([])
@@ -136,29 +138,26 @@ const breadcrumbs = ref([
                 {{ filter.end_date }}
               </VCol> -->
             </VCol>
-            <VCol md="4" cols="6">
-              <!-- Filter Date Range -->
+            <VCol md="4" cols="6" class="pt-0">
               <VCardText class="d-flex align-center gap-2 pa-0">
                 <VAvatar
                   size="48"
                   rounded
                   :image="imageIncome"
                 />
-
                 <div>
                   <p class="mb-0">
                     Total Income
                   </p>
                   <div class="d-flex align-center gap-2">
                     <h6 class="text-h6">
-                      RM2350.00
+                      RM {{ totalIncome }}
                     </h6>
                   </div>
                 </div>
               </VCardText>
             </VCol>
-            <VCol md="4" cols="6">
-              <!-- Filter Date Range -->
+            <VCol md="4" cols="6" class="pt-0">
               <VCardText class="d-flex align-center gap-2 pa-0">
                 <VAvatar
                   size="48"
@@ -172,7 +171,7 @@ const breadcrumbs = ref([
                   </p>
                   <div class="d-flex align-center gap-2">
                     <h6 class="text-h6">
-                      $459.1k
+                      RM {{ totalSpent }}
                     </h6>
                   </div>
                 </div>
