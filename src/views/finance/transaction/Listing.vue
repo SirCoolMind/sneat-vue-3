@@ -1,5 +1,7 @@
 <script setup>
 import { formatMoney, getDateFromISO, getValue } from '@/utils/helpers';
+import imageIncome from '@images/cards/finance-income.png';
+import imageWallet from '@images/cards/finance-wallet.png';
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 
@@ -133,6 +135,48 @@ const breadcrumbs = ref([
               <VCol md="12" cols="12">
                 {{ filter.end_date }}
               </VCol> -->
+            </VCol>
+            <VCol md="4" cols="6">
+              <!-- Filter Date Range -->
+              <VCardText class="d-flex align-center gap-2 pa-0">
+                <VAvatar
+                  size="48"
+                  rounded
+                  :image="imageIncome"
+                />
+
+                <div>
+                  <p class="mb-0">
+                    Total Income
+                  </p>
+                  <div class="d-flex align-center gap-2">
+                    <h6 class="text-h6">
+                      RM2350.00
+                    </h6>
+                  </div>
+                </div>
+              </VCardText>
+            </VCol>
+            <VCol md="4" cols="6">
+              <!-- Filter Date Range -->
+              <VCardText class="d-flex align-center gap-2 pa-0">
+                <VAvatar
+                  size="48"
+                  rounded
+                  :image="imageWallet"
+                />
+
+                <div>
+                  <p class="mb-0">
+                    Total Spent
+                  </p>
+                  <div class="d-flex align-center gap-2">
+                    <h6 class="text-h6">
+                      $459.1k
+                    </h6>
+                  </div>
+                </div>
+              </VCardText>
             </VCol>
           </VRow>
           <VDataTable
