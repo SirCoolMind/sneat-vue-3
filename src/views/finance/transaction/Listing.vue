@@ -145,7 +145,7 @@ const breadcrumbs = ref([
             <VCol md="8" col="12">
               <VRow>
                 <VCol md="12" cols="12" class="py-0" v-if="filter.start_date">
-                  <span style="white-space: nowrap;">
+                  <span class="text-no-wrap">
                     <i>Date: {{ getDateFromISO(filter.start_date, 'Do MMMM YYYY') }}&nbsp;&nbsp;-&nbsp;&nbsp;{{ getDateFromISO(filter.end_date, 'Do MMMM YYYY') }} </i>
                   </span>
                 </VCol>
@@ -157,7 +157,7 @@ const breadcrumbs = ref([
                       :image="imageIncome"
                     />
                     <div>
-                      <p class="mb-0">
+                      <p class="mb-0 text-no-wrap">
                         Total Income
                       </p>
                       <div class="d-flex align-center gap-2">
@@ -177,7 +177,7 @@ const breadcrumbs = ref([
                     />
 
                     <div>
-                      <p class="mb-0">
+                      <p class="mb-0 text-no-wrap">
                         Total Spent
                       </p>
                       <div class="d-flex align-center gap-2">
