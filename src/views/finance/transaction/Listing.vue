@@ -29,8 +29,8 @@ const headers = ref([
   // },
 ])
 
-const totalIncome = ref('')
-const totalSpent = ref('')
+const totalIncome = ref('0.00')
+const totalSpent = ref('0.00')
 const itemsPerPage = ref(5)
 const loading = ref(true)
 const serverItems = ref([])
@@ -80,6 +80,10 @@ const getTablesData = async ({ page, itemsPerPage, sortBy = '' }) => {
     })
     // console.log(response);
     serverItems.value = response.data.data;
+    totalIncome.value = getValue(response, 'data.total_income', '0.00');
+    totalSpent.value = getValue(response, 'data.total_expense', '0.00');
+    filter.value.start_date = getValue(response, 'data.start_date');
+    filter.value.end_date = getValue(response, 'data.end_date');
     loading.value = false;
 
   } catch (error) {
@@ -138,44 +142,54 @@ const breadcrumbs = ref([
                 {{ filter.end_date }}
               </VCol> -->
             </VCol>
-            <VCol md="4" cols="6" class="pt-0">
-              <VCardText class="d-flex align-center gap-2 pa-0">
-                <VAvatar
-                  size="48"
-                  rounded
-                  :image="imageIncome"
-                />
-                <div>
-                  <p class="mb-0">
-                    Total Income
-                  </p>
-                  <div class="d-flex align-center gap-2">
-                    <h6 class="text-h6">
-                      RM {{ totalIncome }}
-                    </h6>
-                  </div>
-                </div>
-              </VCardText>
-            </VCol>
-            <VCol md="4" cols="6" class="pt-0">
-              <VCardText class="d-flex align-center gap-2 pa-0">
-                <VAvatar
-                  size="48"
-                  rounded
-                  :image="imageWallet"
-                />
+            <VCol md="8" col="12">
+              <VRow>
+                <VCol md="12" cols="12" class="py-0" v-if="filter.start_date">
+                  <span style="white-space: nowrap;">
+                    <i>Date: {{ getDateFromISO(filter.start_date, 'Do MMMM YYYY') }}&nbsp;&nbsp;-&nbsp;&nbsp;{{ getDateFromISO(filter.end_date, 'Do MMMM YYYY') }} </i>
+                  </span>
+                </VCol>
+                <VCol md="4" cols="6" class="pt-1 border-t">
+                  <VCardText class="d-flex align-center gap-2 pa-0">
+                    <VAvatar
+                      size="48"
+                      rounded
+                      :image="imageIncome"
+                    />
+                    <div>
+                      <p class="mb-0">
+                        Total Income
+                      </p>
+                      <div class="d-flex align-center gap-2">
+                        <h6 class="text-h6">
+                          RM {{ totalIncome }}
+                        </h6>
+                      </div>
+                    </div>
+                  </VCardText>
+                </VCol>
+                <VCol md="4" cols="6" class="pt-1 border-t">
+                  <VCardText class="d-flex align-center gap-2 pa-0">
+                    <VAvatar
+                      size="48"
+                      rounded
+                      :image="imageWallet"
+                    />
 
-                <div>
-                  <p class="mb-0">
-                    Total Spent
-                  </p>
-                  <div class="d-flex align-center gap-2">
-                    <h6 class="text-h6">
-                      RM {{ totalSpent }}
-                    </h6>
-                  </div>
-                </div>
-              </VCardText>
+                    <div>
+                      <p class="mb-0">
+                        Total Spent
+                      </p>
+                      <div class="d-flex align-center gap-2">
+                        <h6 class="text-h6">
+                          RM {{ totalSpent }}
+                        </h6>
+                      </div>
+                    </div>
+                  </VCardText>
+                </VCol>
+              
+              </VRow>
             </VCol>
           </VRow>
           <VDataTable
