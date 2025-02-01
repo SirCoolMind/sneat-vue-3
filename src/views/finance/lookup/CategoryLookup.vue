@@ -42,6 +42,7 @@ export default {
     returnObject: {
       type: Boolean, default: false,
     },
+    typeIncomeExpense: [Number, String],
   },
 
   data() {
@@ -70,6 +71,12 @@ export default {
   },
 
   watch: {
+    typeIncomeExpense(newValue) {
+      // console.log("moneyCategoryId changed");
+      // console.log(newValue);
+      this.loading = true;
+      this.fetchLookupOptions();
+    },
     searchQuery(newValue) {
       if (!this.lookupOptions.length && !this.loading) {
         this.loading = true;
@@ -84,8 +91,14 @@ export default {
 
   methods: {
     fetchLookupOptions() {
+
+      let url = '/finance/v1/lookup/get-categories';
+      let params = [];
+      if (this.typeIncomeExpense) params.push(`type_income_expense=${this.typeIncomeExpense}`);
+      if (params.length) url += '?' + params.join('&');
+
       axios
-        .get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/lookup/get-categories`)
+        .get(`${import.meta.env.VITE_API_BASE_URL}`+url)
         .then(response => {
           this.lookupOptions = response.data.data; // Assuming API returns data inside data
         })

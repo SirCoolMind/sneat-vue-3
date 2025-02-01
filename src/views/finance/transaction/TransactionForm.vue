@@ -245,6 +245,7 @@ const breadcrumbs = ref([
             <CategoryLookup
               v-else
               v-model="record.money_category" 
+              :type-income-expense="record.type?.id"
               :dense="true"
               :box="true"
               :outline="true"
@@ -268,7 +269,8 @@ const breadcrumbs = ref([
             <SubCategoryLookup
               v-else
               v-model="record.money_subcategory"
-              :money-category-id="record.money_category?.id" 
+              :type-income-expense="record.type?.id"
+              :money-category-id="record.money_category?.id"
               :dense="true"
               :box="true"
               :outline="true"
