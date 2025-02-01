@@ -15,7 +15,7 @@ const props = defineProps({
     <Component
       :is="item.to ? 'RouterLink' : 'a'"
       :to="item.to"
-      :href="item.href"
+      :href="item.to ? item.to : item.href"
       :target="item.target"
     >
       <VIcon
