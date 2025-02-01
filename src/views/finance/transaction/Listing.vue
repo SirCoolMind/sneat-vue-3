@@ -223,7 +223,14 @@ const breadcrumbs = ref([
             <template v-slot:item="{item, index}">
               <tr>
                 <td class="border" style="white-space: nowrap;">
-                  {{ formatMoney(getValue(item, 'amount')) }}
+                  <RouterLink 
+                    :to="{name: 'finance.transaction.item.view', params: {transaction_id: item.id}}"
+                    style="color:rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));"
+                    class="d-flex align-center"
+                  >
+                    {{ formatMoney(getValue(item, 'amount')) }}
+                    &nbsp;&nbsp;<VIcon icon="bx-expand"></VIcon>
+                  </RouterLink>
                 </td>
                 <td class="border">
                   {{ getValue(item, 'money_category.name') }}
@@ -238,13 +245,6 @@ const breadcrumbs = ref([
                 <td class="border border-b-lg">
                   {{ getValue(item, 'description') }}
                 </td>
-                <!-- <td class="border" align="center">
-                  <VBtn
-                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
-                    prepend-icon="bx-show"
-                    text="View"
-                  ></VBtn>
-                </td> -->
               </tr>
             </template>
           </VDataTable>
