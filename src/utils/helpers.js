@@ -285,7 +285,7 @@ export function appendFormData(formData, key, value) {
  */
 export function updateBreadcrumbTitle(breadcrumbsRef, index, newValue) {
   if (Array.isArray(breadcrumbsRef.value) && breadcrumbsRef.value[index]) {
-    breadcrumbsRef.value[index].title = newValue; // Directly modify the reactive array
+    breadcrumbsRef.value[index].title = String(newValue); // Directly modify the reactive array
   } else {
     console.warn('Invalid breadcrumb array or index.');
   }
