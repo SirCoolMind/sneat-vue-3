@@ -48,6 +48,8 @@ const defaultRecord = {
   transaction_date : new Date().toISOString(),
   description : '',
   type : { id: "EXPENSE", name: "Expense" },
+  transaction_images : [],
+  transaction_images_upload : [],
 };
 const record = ref({...defaultRecord});
 
@@ -65,7 +67,7 @@ const getData = async () => {
     console.log(`Fetching data for record ID: ${recordId.value}`);
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction/${recordId.value}`)
     record.value = response.data.data;
-    record.value.photocard_image_upload = [];
+    record.value.transaction_images_upload = [];
     // console.log(record.value)
 
     const newTitle = record.value.id || '...';
@@ -86,11 +88,17 @@ const saveData = async () => {
 
     Object.entries(record.value).forEach(([key, value]) => {
       // Skip keys if necessary
-      if (['img'].includes(key)) return;
+      if (['transaction_images','transaction_images_upload'].includes(key)) return;
 
       // console.log(value);
       appendFormData(formData, key, value);
     });
+
+    if (record.value.transaction_images_upload.length > 0) {
+      record.value.transaction_images_upload.forEach((file, index) => {
+        formData.append(`transaction_images_upload[${index}]`, file);
+      });
+    }
 
     errorMessages.value = {} //reset error msg
     let url= `${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`;
@@ -115,6 +123,13 @@ const saveData = async () => {
     Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
+
+// Method to check if any image is available
+const checkIfAvailable = (images = []) => {
+  // console.log("checkIfAvailable");
+  // console.log(images);
+  return images.some(image => getValue(image,'is_available') == true);
+};
 
 const breadcrumbs = ref([
   {
@@ -297,6 +312,24 @@ const breadcrumbs = ref([
             />
           </VCol>
           
+        </VRow>
+        <VRow v-if="checkIfAvailable(record.transaction_images)">
+          <VCol md="4" cols="12" v-for="(image, i) in record.transaction_images">
+            <ImagePreview
+              v-if="image.is_available"
+              v-model="record.transaction_images[i]"
+              :key="new Date().getSeconds()+i"
+            />
+          </VCol>
+        </VRow>
+        <VRow v-else>
+          <VCol md="4" cols="12">
+            <ImageUpload
+              v-model ="record.transaction_images_upload"
+              :accepted-file-types="['image/jpeg', 'image/png']"
+            />
+          </VCol>
+          <VCol md="6" cols="12"></VCol>
         </VRow>
         <VRow> 
           <VCol cols="12" align="right">
