@@ -27,10 +27,10 @@ watch(mode, (newMode, oldMode) => {
   }
 });
 
-const recordId = ref(route.params.kpop_item_id || 'new');
+const recordId = ref(route.params.transaction_id || 'new');
 if(recordId.value == 'new') //change to edit mode if initial is new
   mode.value = modeEdit;
-watch(() => route.params.kpop_item_id, (newId, oldId) => {
+watch(() => route.params.transaction_id, (newId, oldId) => {
   console.log(`Record ID changed from ${oldId} to ${newId}`);
   recordId.value = newId || 'new';
   mode.value = recordId.value == 'new' ? modeEdit : modeView;

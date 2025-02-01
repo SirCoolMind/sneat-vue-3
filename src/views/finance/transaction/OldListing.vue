@@ -106,7 +106,7 @@ const breadcrumbs = ref([
       <VCard>
         <CardHeaderDefault
           :breadcrumbs="breadcrumbs"
-          :buttonTo="{name: 'finance.transaction.item.view', params: {kpop_item_id: 'new'}}"
+          :buttonTo="{name: 'finance.transaction.item.view', params: {transaction_id: 'new'}}"
         />
         <VCardText>  
           <VRow align="center">
@@ -157,7 +157,7 @@ const breadcrumbs = ref([
                 </td>
                 <td>
                   <VBtn 
-                    :to="{name: 'finance.transaction.item.view', params: {kpop_item_id: item.id}}"
+                    :to="{name: 'finance.transaction.item.view', params: {transaction_id: item.id}}"
                     prepend-icon="bx-show"
                     text="View"
                   ></VBtn>

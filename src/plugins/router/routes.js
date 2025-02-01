@@ -63,7 +63,7 @@ export const routes = [
         component: () => import('@/views/finance/transaction/Listing.vue'),
       },
       {
-        path: 'finance/transaction/:kpop_item_id',
+        path: 'finance/transaction/:transaction_id',
         name: 'finance.transaction.item.view',
         component: () => import('@/views/finance/transaction/View.vue'),
       },
