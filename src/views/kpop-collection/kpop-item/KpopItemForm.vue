@@ -153,7 +153,7 @@ const breadcrumbs = ref([
         <VCol md="4" cols="12">
           <Breadcrumbs :items="breadcrumbs"/>        
         </VCol>
-        <VCol md="8" cols="12" align="right">
+        <VCol class="d-none d-md-block" md="8" cols="12" align="right">
           <v-fab-transition group :disabled="!canEdit()" key="editing-btns">
             <template v-if="canEdit()">
               <VBtn @click="saveData" class="me-2">Submit</VBtn>
@@ -163,6 +163,10 @@ const breadcrumbs = ref([
           <v-fab-transition group :disabled="canEdit()" key="view-btns">
             <template v-if="!canEdit()">
               <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
+              <DeleteButton
+                :delete_api_url="`/kpop/v1/admin/kpop-item/${recordId}`"
+                :route_success="`/kpop-collection`"
+              />
             </template>
           </v-fab-transition>
         </VCol>
@@ -311,6 +315,10 @@ const breadcrumbs = ref([
             <v-fab-transition group :disabled="canEdit()">
               <template v-if="!canEdit()">
                 <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
+                <DeleteButton
+                  :delete_api_url="`/kpop/v1/admin/kpop-item/${recordId}`"
+                  :route_success="`/kpop-collection`"
+                />
               </template>
             </v-fab-transition>
           </VCol>
