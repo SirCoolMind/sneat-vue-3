@@ -38,7 +38,7 @@ const deleteData = async () => {
 
     Swal.fire({ icon: "success", title: "Success", text: "Record deleted!" });
 
-    await router.push(props.route_success);
+    await router.push({ name: props.route_success });
   } catch (error) {
     console.error("deleteData Function failed:", error);
     errorMessages.value = error?.response?.data?.errors ?? {};

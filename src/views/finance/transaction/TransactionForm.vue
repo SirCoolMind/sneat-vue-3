@@ -166,7 +166,7 @@ const breadcrumbs = ref([
               <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
               <DeleteButton
                 :delete_api_url="`/finance/v1/transaction/${recordId}`"
-                :route_success="`/finance/transaction`"
+                :route_success="`finance.transaction.item.listing`"
               />
             </template>
           </v-fab-transition>
@@ -348,7 +348,7 @@ const breadcrumbs = ref([
                 <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
                 <DeleteButton
                   :delete_api_url="`/finance/v1/transaction/${recordId}`"
-                  :route_success="`/finance/transaction`"
+                  :route_success="`finance.transaction.item.listing`"
                 />
               </template>
             </v-fab-transition>

@@ -165,7 +165,7 @@ const breadcrumbs = ref([
               <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
               <DeleteButton
                 :delete_api_url="`/kpop/v1/admin/kpop-item/${recordId}`"
-                :route_success="`/kpop-collection`"
+                :route_success="`kpop-collection.item.listing`"
               />
             </template>
           </v-fab-transition>
@@ -317,7 +317,7 @@ const breadcrumbs = ref([
                 <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
                 <DeleteButton
                   :delete_api_url="`/kpop/v1/admin/kpop-item/${recordId}`"
-                  :route_success="`/kpop-collection`"
+                  :route_success="`kpop-collection.item.listing`"
                 />
               </template>
             </v-fab-transition>
