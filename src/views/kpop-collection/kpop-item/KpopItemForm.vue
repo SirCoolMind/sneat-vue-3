@@ -90,7 +90,7 @@ const saveData = async () => {
 
     Object.entries(record.value).forEach(([key, value]) => {
       // Skip keys if necessary
-      if (['photocard_image', 'photocard_image_upload'].includes(key)) return;
+      if (['photocard_image_upload'].includes(key)) return;
 
       appendFormData(formData, key, value);
     });
