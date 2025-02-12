@@ -124,6 +124,29 @@ const saveData = async () => {
   }
 }
 
+const deleteData = async () => {
+  try {
+    if(recordId.value == 'new') {
+      return;
+    }
+    
+    let url= `${import.meta.env.VITE_API_BASE_URL}/finance/v1/transaction`;
+    url += '/'+recordId.value;
+    const response = await axios.delete(url);
+    console.log('response delete')
+    console.log(response)
+
+    Swal.fire({ icon: "success", title: "Success", text: "Record deleted!"});
+
+    await router.push(`/finance/transaction`);
+
+  } catch (error) {
+    console.error('deleteData Function failed:', error);
+    errorMessages.value = getValue(error, "response.data.errors") ?? {};
+    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
+  }
+}
+
 // Method to check if any image is available
 const checkIfAvailable = (images = []) => {
   // console.log("checkIfAvailable");
@@ -164,6 +187,7 @@ const breadcrumbs = ref([
           <v-fab-transition group :disabled="canEdit()" key="view-btns">
             <template v-if="!canEdit()">
               <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
+              <VBtn color="error" @click="deleteData" class="me-2">Delete</VBtn>
             </template>
           </v-fab-transition>
         </VCol>
@@ -342,6 +366,7 @@ const breadcrumbs = ref([
             <v-fab-transition group :disabled="canEdit()">
               <template v-if="!canEdit()">
                 <VBtn @click="mode = modeEdit" class="me-2">Edit</VBtn>
+                <VBtn color="error" @click="deleteData" class="me-2">Delete</VBtn>
               </template>
             </v-fab-transition>
           </VCol>
