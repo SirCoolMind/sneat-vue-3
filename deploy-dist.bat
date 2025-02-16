@@ -5,7 +5,7 @@ set SERVER_DIR=/var/www/sneat-vue-3
 set LOCAL_FILE=vuetemplate.tar.gz
 
 :: Generate date in DDMMYYYY format using PowerShell
-for /f %%I in ('powershell -NoProfile -Command "(Get-Date).ToString('ddMMyyyy')"') do set DATE=%%I
+for /f %%I in ('powershell -NoProfile -Command "(Get-Date).ToString('yyyyMMdd')"') do set DATE=%%I
 :: Define backup file name
 set BACKUP_FILE=dist_%DATE%
 
