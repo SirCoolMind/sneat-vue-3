@@ -12,7 +12,7 @@ export function getValue(resource, key, defaultValue = 'capayam') {
   if (defaultValue != 'capayam') {
     return get(resource, key, { default: defaultValue });
   }
-  return get(resource, key);
+  return get(resource, key, { default: '' });
 }
 
 /**
