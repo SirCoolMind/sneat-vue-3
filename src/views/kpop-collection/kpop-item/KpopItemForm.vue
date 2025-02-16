@@ -157,7 +157,8 @@ const breadcrumbs = ref([
           <v-fab-transition group :disabled="!canEdit()" key="editing-btns">
             <template v-if="canEdit()">
               <VBtn @click="saveData" class="me-2">Submit</VBtn>
-              <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+              <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal" class="me-2">Cancel</VBtn>
+              <DeleteButton disabled />
             </template>
           </v-fab-transition>
           <v-fab-transition group :disabled="canEdit()" key="view-btns">
@@ -309,7 +310,8 @@ const breadcrumbs = ref([
             <v-fab-transition group :disabled="!canEdit()">
               <template v-if="canEdit()">
                 <VBtn @click="saveData" class="me-2">Submit</VBtn>
-                <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal">Cancel</VBtn>
+                <VBtn @click="mode = modeView" v-if="recordId != 'new'" color="secondary" type="reset" variant="tonal" class="me-2">Cancel</VBtn>
+                <DeleteButton disabled />
               </template>
             </v-fab-transition>
             <v-fab-transition group :disabled="canEdit()">

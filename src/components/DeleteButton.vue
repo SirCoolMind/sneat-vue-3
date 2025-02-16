@@ -7,7 +7,11 @@ import { useRouter } from "vue-router";
 const props = defineProps({
   delete_api_url: String,
   route_success: String,
+  disabled: Boolean,
 });
+
+// Default values
+const isDisabled = computed(() => props.disabled ?? false);
 
 const router = useRouter();
 const errorMessages = ref({});
@@ -48,7 +52,7 @@ const deleteData = async () => {
 </script>
 
 <template>
-  <VBtn color="error" @click="deleteData" class="me-2">
+  <VBtn color="error" @click="deleteData" class="me-2" :disabled="isDisabled">
     <slot>Delete</slot>
   </VBtn>
 </template>
