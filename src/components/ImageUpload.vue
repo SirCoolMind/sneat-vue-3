@@ -46,9 +46,10 @@
     @init="handleFilePondInit"
     @updatefiles="onFileUpdate"
   />
-  <ul v-if="errorMessages" class="filepond-error-message" role="alert" aria-live="polite">
-    <li v-for="message in errorMessages" class="filepond-error-message__message">{{ message }}</li>
-  </ul>
+  <div v-if="errorMessages" class="filepond-error-message" role="alert" aria-live="polite">
+    <div v-for="message in errorMessages" class="filepond-error-message__message">◉ {{ message }}</div>
+  </div>
+  
 </template>
 
 <script setup>
