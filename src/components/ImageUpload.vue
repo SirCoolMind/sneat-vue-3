@@ -14,6 +14,26 @@
   max-width: 100%;
 }
 
+.filepond-error-message {
+  flex: 1 1 auto;
+  font-size: 13px;
+  min-height: 14px;
+  min-width: 1px;
+  position: relative;
+  color:rgb(var(--v-theme-error));
+  font-weight: 400;
+}
+
+.filepond-error-message__message {
+  line-height: 13px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  transition-duration: 150ms;
+  padding-bottom: 0.5em;
+}
+
 </style>
 <template>
   <file-pond
@@ -26,6 +46,9 @@
     @init="handleFilePondInit"
     @updatefiles="onFileUpdate"
   />
+  <ul v-if="errorMessages" class="filepond-error-message" role="alert" aria-live="polite">
+    <li v-for="message in errorMessages" class="filepond-error-message__message">{{ message }}</li>
+  </ul>
 </template>
 
 <script setup>
@@ -57,6 +80,7 @@ const props = defineProps({
     type: Array,
     default: () => ['image/jpeg', 'image/png']
   },
+  errorMessages: Array,
 });
 
 // Custom event handlers
