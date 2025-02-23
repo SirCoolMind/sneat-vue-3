@@ -331,6 +331,7 @@ const breadcrumbs = ref([
             <ImageUpload
               v-model ="record.transaction_images_upload"
               :accepted-file-types="['image/jpeg', 'image/png']"
+              :errorMessages="getValue(errorMessages, 'transaction_images_upload')"
             />
           </VCol>
           <VCol md="6" cols="12"></VCol>
