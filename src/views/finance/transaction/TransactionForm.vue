@@ -234,6 +234,7 @@ const breadcrumbs = ref([
               v-model="record.transaction_date"
               teleport
               :is-24="false"
+              :readonly="mode == 'view'"
             ></VueDatePicker>
           </VCol>
            
