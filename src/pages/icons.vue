@@ -48,6 +48,10 @@ const iconsList = [
   'bx-barcode-reader',
   'bx-baseball',
   'bx-basket',
+  'fa-anchor',
+  'fa6-solid-anchor',
+  'fa-circle',
+  'fa6-solid-circle',
 ]
 </script>
 
