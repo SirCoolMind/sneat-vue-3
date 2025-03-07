@@ -322,7 +322,8 @@ const breadcrumbs = ref([
             <ImagePreview
               v-if="image.is_available"
               v-model="record.transaction_images[i]"
-              :key="new Date().getSeconds()+i"
+              :key="'preview'+i"
+              :mode="mode"
             />
           </VCol>
         </VRow>
@@ -331,7 +332,7 @@ const breadcrumbs = ref([
             <ImageUpload
               v-model ="record.transaction_images_upload"
               :accepted-file-types="['image/jpeg', 'image/png']"
-              :errorMessages="getValue(errorMessages, 'transaction_images_upload')"
+              :errorMessages="getValue(errorMessages, 'transaction_images_upload', [])"
             />
           </VCol>
           <VCol md="6" cols="12"></VCol>
