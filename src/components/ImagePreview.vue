@@ -28,12 +28,13 @@
     allowImagePreview="true"
     imagePreviewMaxFileSize="5MB"
     @updatefiles="onFileUpdate"
+    :allowRemove="isModeNotView"
   />
 </template>
 
 <script setup>
 
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 // Import Vue FilePond and plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -72,7 +73,14 @@ const props = defineProps({
     type: Array,
     default: () => ['image/jpeg', 'image/png']
   },
+  mode: {
+    type: String,
+    default: "edit",
+  },
 });
+
+// Computed property to check if mode is NOT "view"
+const isModeNotView = computed(() => props.mode != "view");
 
 // Custom event handlers
 const handleFilePondInit = () => {
