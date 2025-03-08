@@ -79,7 +79,7 @@ $divider-gap: 0.75rem;
     .nav-group {
       .nav-group-children-wrapper .nav-group-children .nav-link {
         .nav-item-icon {
-          color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
+          // color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
         }
 
         .router-link-exact-active {
