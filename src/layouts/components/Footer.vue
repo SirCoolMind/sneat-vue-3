@@ -1,43 +1,23 @@
+<style scoped>
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 14px;
+  color: #6c757d;
+}
+.text-primary {
+  color: #007bff;
+}
+</style>
 <template>
-  <div class="h-100 d-flex align-center justify-md-space-between justify-center">
-    <!-- 👉 Footer: left content -->
-    <span class="d-flex align-center">
+  <div class="footer-container">
+    <span>
       Maintained by 
-      <a
-        href="https://vfolio.hafiz.day"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-primary ms-1"
-      >
-        Hafiz
-      </a>
-      .&nbsp;
+      <a href="https://vfolio.hafiz.day" target="_blank" class="text-primary">Hafiz</a>.&nbsp;
       Credit to
-      <a
-        href="https://themeselection.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-primary ms-1"
-      >ThemeSelection</a>
+      <a href="https://themeselection.com" target="_blank" class="text-primary">ThemeSelection</a>
     </span>
-    <!-- 👉 Footer: right content -->
-    <!-- <span class="d-md-flex gap-x-4 text-primary d-none">
-      <a
-        href="https://themeselection.com/license/"
-        target="noopener noreferrer"
-      >License</a>
-      <a
-        href="https://themeselection.com/"
-        target="noopener noreferrer"
-      >More Themes</a>
-      <a
-        href="https://demos.themeselection.com/sneat-vuetify-vuejs-admin-template/documentation/"
-        target="noopener noreferrer"
-      >Documentation</a>
-      <a
-        href="https://themeselection.com/support/"
-        target="noopener noreferrer"
-      >Support</a>
-    </span> -->
   </div>
 </template>
