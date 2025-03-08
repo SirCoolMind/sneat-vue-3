@@ -145,6 +145,14 @@ const breadcrumbs = ref([
     </template>
     <VCardText>
       <VForm>
+        <VRow v-if="typeof errorMessages == 'string'">
+          <VCol md="4">
+            <VAlert :value="errorMessages" type="error">
+              {{ errorMessages }}
+            </VAlert>
+          </VCol>
+        </VRow>
+        
         <!-- <h1>Current Mode: {{ mode }}</h1>
         <h1>Current RecordId: {{ recordId }}</h1>
         <h1>Current RecordId: {{ record }}</h1> -->
