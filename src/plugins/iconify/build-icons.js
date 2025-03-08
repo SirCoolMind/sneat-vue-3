@@ -76,6 +76,7 @@ const sources = {
                 'money-check-dollar',
                 'circle-dollar-to-slot',
                 'sack-dollar',
+                'user-gear',
             ],
         },
         // Custom file with only few icons

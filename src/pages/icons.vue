@@ -58,6 +58,7 @@ const iconsList = [
   'fa6-solid-money-check-dollar',
   'fa6-solid-circle-dollar-to-slot',
   'fa6-solid-sack-dollar',
+  'fa6-solid-user-gear',
 ]
 </script>
 
