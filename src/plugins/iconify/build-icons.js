@@ -62,14 +62,20 @@ const sources = {
             filename: require.resolve('@iconify-json/fa/icons.json'),
             icons: [
                 'circle',
-                'anchor'
+                'anchor',
+                'bars',
             ],
         },
         {
             filename: require.resolve('@iconify-json/fa6-solid/icons.json'),
             icons: [
                 'circle',
-                'anchor'
+                'anchor',
+                'image-portrait',
+                'bars',
+                'money-check-dollar',
+                'circle-dollar-to-slot',
+                'sack-dollar',
             ],
         },
         // Custom file with only few icons

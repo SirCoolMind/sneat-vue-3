@@ -43,11 +43,11 @@ const navItems = [
   },
   {
     title: 'KPOP Collection',
-    icon: 'bx-collection',
+    icon: 'fa6-solid-bars',
     children: [
       {
         title: 'Photocards',
-        icon: 'bx-collection',
+        icon: 'fa6-solid-image-portrait',
         to: '/kpop-collection',
       },
       {
@@ -59,21 +59,21 @@ const navItems = [
   },
   {
     title: 'Finance',
-    icon: 'bx-collection',
+    icon: 'fa6-solid-bars',
     children: [
       {
         title: 'Finance Dashboard',
-        icon: 'bx-board',
+        icon: 'fa6-solid-money-check-dollar',
         to: '/finance/dashboard',
       },
       {
         title: 'New Transaction',
-        icon: 'bx-collection',
+        icon: 'fa6-solid-circle-dollar-to-slot',
         to: '/finance/transaction/new',
       },
       {
         title: 'Transaction',
-        icon: 'bx-collection',
+        icon: 'fa6-solid-sack-dollar',
         to: '/finance/transaction',
       },
       {

@@ -52,6 +52,12 @@ const iconsList = [
   'fa6-solid-anchor',
   'fa-circle',
   'fa6-solid-circle',
+  'fa6-solid-image-portrait',
+  'fa-bars',
+  'fa6-solid-bars',
+  'fa6-solid-money-check-dollar',
+  'fa6-solid-circle-dollar-to-slot',
+  'fa6-solid-sack-dollar',
 ]
 </script>
 
