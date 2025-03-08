@@ -6,6 +6,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const authStore = useAuthStore()
 
+const userName = ref(localStorage.getItem('user_name') || 'Guest')
+
 // Function to handle logout
 const logout = async () => {
 
@@ -64,9 +66,9 @@ const logout = async () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ userName }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <!-- <VListItemSubtitle>Admin</VListItemSubtitle> -->
           </VListItem>
           <VDivider class="my-2" />
 

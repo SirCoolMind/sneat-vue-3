@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: null, // Token will be stored here
+    user_name: null, // Token will be stored here
+    user_email: null, // Token will be stored here
   }),
 
   actions: {
@@ -23,9 +25,13 @@ export const useAuthStore = defineStore('auth', {
         
         // Store the token in Pinia state
         this.token = response.data.data.token
+        this.user_name = response.data.data.user_name
+        this.user_email = response.data.data.user_email
 
         // Also store the token in local storage for persistence
         localStorage.setItem('auth_token', this.token)
+        localStorage.setItem('user_name', this.user_name)
+        localStorage.setItem('user_email', this.user_email)
         
         // Set axios default Authorization header for future requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
