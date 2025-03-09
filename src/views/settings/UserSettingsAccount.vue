@@ -1,360 +1,181 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import { appendFormData, getValue } from '@/utils/helpers';
+import axios from 'axios';
+import Swal from 'sweetalert2-neutral';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const accountData = {
-  avatarImg: avatar1,
-  firstName: 'john',
-  lastName: 'Doe',
-  email: 'johnDoe@example.com',
-  org: 'ThemeSelection',
-  phone: '+1 (917) 543-9876',
-  address: '123 Main St, New York, NY 10001',
-  state: 'New York',
-  zip: '10001',
-  country: 'USA',
-  language: 'English',
-  timezone: '(GMT-11:00) International Date Line West',
-  currency: 'USD',
-}
+const router = useRouter();
+const route = useRoute();
 
-const refInputEl = ref()
-const accountDataLocal = ref(structuredClone(accountData))
-const isAccountDeactivated = ref(false)
+// ui
+const modeEdit = 'edit';
+const mode = ref(modeEdit);
+const recordId = ref('new');
 
-const resetForm = () => {
-  accountDataLocal.value = structuredClone(accountData)
-}
+// Data related function
+const errorMessages = ref({})
+const defaultRecord = {
+  name : null,
+  email : null,
+  profile_image : [],
+  profile_image_upload : [],
+};
+const record = ref({...defaultRecord});
 
-const changeAvatar = file => {
-  const fileReader = new FileReader()
-  const { files } = file.target
-  if (files && files.length) {
-    fileReader.readAsDataURL(files[0])
-    fileReader.onload = () => {
-      if (typeof fileReader.result === 'string')
-        accountDataLocal.value.avatarImg = fileReader.result
-    }
+onMounted(() => {
+  getData();
+});
+
+const getData = async () => {
+  try {
+    console.log(`Fetching data for record ID: ${recordId.value}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user-setting/account`)
+    record.value = response.data.data;
+    record.value.profile_image_upload = [];
+    recordId.value = record.value.id;
+    // console.log(record.value)
+    localStorage.setItem('user_name', record.value.name)
+    localStorage.setItem('user_email', record.value.email)
+
+  } catch (error) {
+    // console.error('saveData Function failed:', error);
+    errorMessages.value = getValue(error, "response.data.errors") ?? {};
+    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
 
-// reset avatar image
-const resetAvatar = () => {
-  accountDataLocal.value.avatarImg = accountData.avatarImg
+const saveData = async () => {
+  try {
+
+    // console.log(record.value)
+    const formData = new FormData();
+
+    Object.entries(record.value).forEach(([key, value]) => {
+      // Skip keys if necessary
+      if (['profile_image','profile_image_upload'].includes(key)) return;
+
+      // console.log(value);
+      appendFormData(formData, key, value);
+    });
+
+    if (record.value.profile_image_upload.length > 0) {
+      record.value.profile_image_upload.forEach((file, index) => {
+        formData.append(`profile_image_upload[${index}]`, file);
+      });
+    }
+
+    errorMessages.value = {} //reset error msg
+    let url= `${import.meta.env.VITE_API_BASE_URL}/user-setting/account`;
+    if(recordId.value != 'new') {
+      url += '/'+recordId.value;
+      formData.append('_method', 'PUT');
+    }
+    const response = await axios.post(url, formData);
+    // console.log(response)
+
+    record.value = response.data.data;
+    record.value.profile_image_upload = [];
+    recordId.value = record.value.id;
+
+    Swal.fire({ icon: "success", title: "Success", text: "Record saved!"});
+
+    // await router.push(`/finance/transaction/${record.value.id}`);
+
+  } catch (error) {
+    console.error('saveData Function failed:', error);
+    errorMessages.value = getValue(error, "response.data.errors") ?? {};
+    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
+  }
 }
 
-const timezones = [
-  '(GMT-11:00) International Date Line West',
-  '(GMT-11:00) Midway Island',
-  '(GMT-10:00) Hawaii',
-  '(GMT-09:00) Alaska',
-  '(GMT-08:00) Pacific Time (US & Canada)',
-  '(GMT-08:00) Tijuana',
-  '(GMT-07:00) Arizona',
-  '(GMT-07:00) Chihuahua',
-  '(GMT-07:00) La Paz',
-  '(GMT-07:00) Mazatlan',
-  '(GMT-07:00) Mountain Time (US & Canada)',
-  '(GMT-06:00) Central America',
-  '(GMT-06:00) Central Time (US & Canada)',
-  '(GMT-06:00) Guadalajara',
-  '(GMT-06:00) Mexico City',
-  '(GMT-06:00) Monterrey',
-  '(GMT-06:00) Saskatchewan',
-  '(GMT-05:00) Bogota',
-  '(GMT-05:00) Eastern Time (US & Canada)',
-  '(GMT-05:00) Indiana (East)',
-  '(GMT-05:00) Lima',
-  '(GMT-05:00) Quito',
-  '(GMT-04:00) Atlantic Time (Canada)',
-  '(GMT-04:00) Caracas',
-  '(GMT-04:00) La Paz',
-  '(GMT-04:00) Santiago',
-  '(GMT-03:30) Newfoundland',
-  '(GMT-03:00) Brasilia',
-  '(GMT-03:00) Buenos Aires',
-  '(GMT-03:00) Georgetown',
-  '(GMT-03:00) Greenland',
-  '(GMT-02:00) Mid-Atlantic',
-  '(GMT-01:00) Azores',
-  '(GMT-01:00) Cape Verde Is.',
-  '(GMT+00:00) Casablanca',
-  '(GMT+00:00) Dublin',
-  '(GMT+00:00) Edinburgh',
-  '(GMT+00:00) Lisbon',
-  '(GMT+00:00) London',
-]
+// Method to check if any image is available
+const checkIfAvailable = (images = []) => {
+  // console.log("checkIfAvailable");
+  // console.log(images);
+  return images.some(image => getValue(image,'is_available') == true);
+};
 
-const currencies = [
-  'USD',
-  'EUR',
-  'GBP',
-  'AUD',
-  'BRL',
-  'CAD',
-  'CNY',
-  'CZK',
-  'DKK',
-  'HKD',
-  'HUF',
-  'INR',
-]
+const breadcrumbs = ref([
+  {
+    title: 'Account Details',
+    disabled: true,
+    show: true,
+  },
+]);
 </script>
 
 <template>
-  <VRow>
-    <VCol cols="12">
-      <VCard title="Account Details">
-        <VCardText class="d-flex">
-          <!-- 👉 Avatar -->
-          <VAvatar
-            rounded="lg"
-            size="100"
-            class="me-6"
-            :image="accountDataLocal.avatarImg"
-          />
+  <VCard>
+    <template v-slot:title>
+      <VRow align="center"> 
+        <VCol md="4" cols="12">
+          <Breadcrumbs :items="breadcrumbs"/>        
+        </VCol>
+      </VRow>
+    </template>
+    <VCardText>
+      <VForm>
+        <VRow v-if="typeof errorMessages == 'string'">
+          <VCol md="4">
+            <VAlert :value="errorMessages" type="error">
+              {{ errorMessages }}
+            </VAlert>
+          </VCol>
+        </VRow>
+        
+        <!-- <h1>Current Mode: {{ mode }}</h1>
+        <h1>Current RecordId: {{ recordId }}</h1>
+        <h1>Current RecordId: {{ record }}</h1> -->
 
-          <!-- 👉 Upload Photo -->
-          <form class="d-flex flex-column justify-center gap-5">
-            <div class="d-flex flex-wrap gap-2">
-              <VBtn
-                color="primary"
-                @click="refInputEl?.click()"
-              >
-                <VIcon
-                  icon="bx-cloud-upload"
-                  class="d-sm-none"
-                />
-                <span class="d-none d-sm-block">Upload new photo</span>
-              </VBtn>
-
-              <input
-                ref="refInputEl"
-                type="file"
-                name="file"
-                accept=".jpeg,.png,.jpg,GIF"
-                hidden
-                @input="changeAvatar"
-              >
-
-              <VBtn
-                type="reset"
-                color="error"
-                variant="tonal"
-                @click="resetAvatar"
-              >
-                <span class="d-none d-sm-block">Reset</span>
-                <VIcon
-                  icon="bx-refresh"
-                  class="d-sm-none"
-                />
-              </VBtn>
-            </div>
-
-            <p class="text-body-1 mb-0">
-              Allowed JPG, GIF or PNG. Max size of 800K
-            </p>
-          </form>
-        </VCardText>
-
-        <VDivider />
-
-        <VCardText>
-          <!-- 👉 Form -->
-          <VForm class="mt-6">
-            <VRow>
-              <!-- 👉 First Name -->
-              <VCol
-                md="6"
-                cols="12"
-              >
-                <VTextField
-                  v-model="accountDataLocal.firstName"
-                  placeholder="John"
-                  label="First Name"
-                />
-              </VCol>
-
-              <!-- 👉 Last Name -->
-              <VCol
-                md="6"
-                cols="12"
-              >
-                <VTextField
-                  v-model="accountDataLocal.lastName"
-                  placeholder="Doe"
-                  label="Last Name"
-                />
-              </VCol>
-
-              <!-- 👉 Email -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.email"
-                  label="E-mail"
-                  placeholder="johndoe@gmail.com"
-                  type="email"
-                />
-              </VCol>
-
-              <!-- 👉 Organization -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.org"
-                  label="Organization"
-                  placeholder="ThemeSelection"
-                />
-              </VCol>
-
-              <!-- 👉 Phone -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.phone"
-                  label="Phone Number"
-                  placeholder="+1 (917) 543-9876"
-                />
-              </VCol>
-
-              <!-- 👉 Address -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.address"
-                  label="Address"
-                  placeholder="123 Main St, New York, NY 10001"
-                />
-              </VCol>
-
-              <!-- 👉 State -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.state"
-                  label="State"
-                  placeholder="New York"
-                />
-              </VCol>
-
-              <!-- 👉 Zip Code -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="accountDataLocal.zip"
-                  label="Zip Code"
-                  placeholder="10001"
-                />
-              </VCol>
-
-              <!-- 👉 Country -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.country"
-                  label="Country"
-                  :items="['USA', 'Canada', 'UK', 'India', 'Australia']"
-                  placeholder="Select Country"
-                />
-              </VCol>
-
-              <!-- 👉 Language -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.language"
-                  label="Language"
-                  placeholder="Select Language"
-                  :items="['English', 'Spanish', 'Arabic', 'Hindi', 'Urdu']"
-                />
-              </VCol>
-
-              <!-- 👉 Timezone -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.timezone"
-                  label="Timezone"
-                  placeholder="Select Timezone"
-                  :items="timezones"
-                  :menu-props="{ maxHeight: 200 }"
-                />
-              </VCol>
-
-              <!-- 👉 Currency -->
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VSelect
-                  v-model="accountDataLocal.currency"
-                  label="Currency"
-                  placeholder="Select Currency"
-                  :items="currencies"
-                  :menu-props="{ maxHeight: 200 }"
-                />
-              </VCol>
-
-              <!-- 👉 Form Actions -->
-              <VCol
-                cols="12"
-                class="d-flex flex-wrap gap-4"
-              >
-                <VBtn>Save changes</VBtn>
-
-                <VBtn
-                  color="secondary"
-                  variant="tonal"
-                  type="reset"
-                  @click.prevent="resetForm"
-                >
-                  Reset
-                </VBtn>
-              </VCol>
-            </VRow>
-          </VForm>
-        </VCardText>
-      </VCard>
-    </VCol>
-
-    <VCol cols="12">
-      <!-- 👉 Deactivate Account -->
-      <VCard title="Deactivate Account">
-        <VCardText>
-          <div>
-            <VCheckbox
-              v-model="isAccountDeactivated"
-              label="I confirm my account deactivation"
+        <VRow v-if="checkIfAvailable(record.profile_image)">
+          <VCol md="4" cols="12" v-for="(image, i) in record.profile_image">
+            <ImagePreview
+              v-if="image.is_available"
+              v-model="record.profile_image[i]"
+              :key="'preview'+i"
+              :mode="mode"
             />
-          </div>
+          </VCol>
+        </VRow>
+        <VRow v-else>
+          <VCol md="4" cols="12">
+            <ImageUpload
+              v-model ="record.profile_image_upload"
+              :accepted-file-types="['image/jpeg', 'image/png']"
+              :errorMessages="getValue(errorMessages, 'profile_image_upload', [])"
+            />
+          </VCol>
+          <VCol md="6" cols="12"></VCol>
+        </VRow>
+        <VRow>
 
-          <VBtn
-            :disabled="!isAccountDeactivated"
-            color="error"
-            class="mt-3"
-          >
-            Deactivate Account
-          </VBtn>
-        </VCardText>
-      </VCard>
-    </VCol>
-  </VRow>
+          <VCol md="6" cols="12">
+            <VTextField
+              v-model="record.name"
+              prepend-inner-icon="mdi-account"
+              label="Account Name"
+              placeholder="Insert your name here..."
+              :error-messages="getValue(errorMessages, 'name')"
+            />
+          </VCol>
+          <VCol md="6" cols="12">
+            <VTextField
+              v-model="record.email"
+              prepend-inner-icon="mdi-email"
+              label="Account Email"
+              placeholder="Insert your email here..."
+              :error-messages="getValue(errorMessages, 'email')"
+            />
+          </VCol>
+
+        </VRow>
+        <VRow> 
+          <VCol cols="12" align="left">
+            <VBtn @click="saveData" class="me-2">Save Changes</VBtn>
+          </VCol>
+        </VRow>
+      </VForm>
+    </VCardText>
+  </VCard>
 </template>

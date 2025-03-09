@@ -59,6 +59,9 @@ const iconsList = [
   'fa6-solid-circle-dollar-to-slot',
   'fa6-solid-sack-dollar',
   'fa6-solid-user-gear',
+  'fa6-solid-user',
+  'mdi-account',
+  'mdi-email',
 ]
 </script>
 
