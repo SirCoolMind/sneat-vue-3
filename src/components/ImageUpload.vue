@@ -46,7 +46,7 @@
     @init="handleFilePondInit"
     @updatefiles="onFileUpdate"
   />
-  <div v-if="errorMessages && typeof errorMessages == 'object'" class="filepond-error-message" role="alert" aria-live="polite">
+  <div v-if="errorMessages && Array.isArray(errorMessages) && errorMessages.length > 0" class="filepond-error-message" role="alert" aria-live="polite">
     <div v-for="message in errorMessages" class="filepond-error-message__message">◉ {{ message }}</div>
   </div>
   
