@@ -1,6 +1,9 @@
 <script setup>
 import { useAuthStore } from '@/plugins/auth';
+import { getValue } from '@/utils/helpers';
 import avatar1 from '@images/avatars/avatar-1.png';
+import axios from 'axios';
+import Swal from 'sweetalert2-neutral';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -16,6 +19,27 @@ const logout = async () => {
     router.push('/login') // Redirect on successful login
   } else {
     console.error('Logout failed')
+  }
+}
+
+// Data related function
+const errorMessages = ref({})
+const userData = ref({});
+
+onMounted(() => {
+  getData();
+});
+
+const getData = async () => {
+  try {
+    console.log(`Fetching user data`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user-setting/account`)
+    // console.log(response.data.data)
+    userData.value = response.data.data;
+  } catch (error) {
+    console.error('getData Function failed:', error);
+    errorMessages.value = getValue(error, "response.data.errors") ?? {};
+    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
 </script>
@@ -34,7 +58,8 @@ const logout = async () => {
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1" />
+      <VImg v-if="userData?.profile_image?.[0]" :src="userData.profile_image[0].source" />
+      <VImg v-else :src="avatar1" />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -59,7 +84,8 @@ const logout = async () => {
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                    <VImg v-if="userData?.profile_image?.[0]" :src="userData.profile_image[0].source" />
+                    <VImg v-else :src="avatar1" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>

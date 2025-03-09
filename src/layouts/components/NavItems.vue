@@ -89,6 +89,14 @@ const navItems = [
     ]
   },
   {
+    heading: "Settings"
+  },
+  {
+    title: "User Settings",
+    icon: "fa6-solid-user-gear",
+    to: "/user-settings"
+  },
+  {
     heading: "Templates Things"
   },
   {

@@ -56,6 +56,8 @@ const sources = {
                 'arrow-top-right',
                 'arrow-collapse-all',
                 'arrow-down-left',
+                'account',
+                'email',
             ],
         },
         {
@@ -76,6 +78,8 @@ const sources = {
                 'money-check-dollar',
                 'circle-dollar-to-slot',
                 'sack-dollar',
+                'user-gear',
+                'user',
             ],
         },
         // Custom file with only few icons
