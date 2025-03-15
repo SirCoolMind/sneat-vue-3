@@ -3,7 +3,7 @@ import { useAuthStore } from '@/plugins/auth';
 import { getValue } from '@/utils/helpers';
 import avatar1 from '@images/avatars/avatar-1.png';
 import axios from 'axios';
-import Swal from 'sweetalert2-neutral';
+// import Swal from 'sweetalert2-neutral';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -39,7 +39,7 @@ const getData = async () => {
   } catch (error) {
     console.error('getData Function failed:', error);
     errorMessages.value = getValue(error, "response.data.errors") ?? {};
-    Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
+    // Swal.fire({ icon: "error", title: "Oops...", text: "Something is wrong!" });
   }
 }
 </script>
