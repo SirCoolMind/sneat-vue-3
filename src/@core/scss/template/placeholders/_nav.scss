@@ -28,13 +28,13 @@
 
   // style for nested dot icon
   .nav-item-icon {
-    color: rgb(var(--v-theme-primary), var(--v-activated-opacity)) !important;
-    transform: scale(2.6662);
+    color: rgb(var(--v-theme-primary), var(--v-activated-opacity-icon)) !important;
+    transform: scale(1.3);
 
     &::before {
       position: absolute;
-      border-radius: 6px;
-      background-color: rgb(var(--v-theme-primary));
+      // border-radius: 6px;
+      // background-color: rgb(var(--v-theme-primary));
       block-size: 100%;
       content: "";
       inline-size: 100%;
