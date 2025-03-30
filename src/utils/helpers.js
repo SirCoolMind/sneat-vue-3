@@ -135,6 +135,72 @@ export function formatMoney(value, unit = 'RM') {
   return formatter.format(value).replace("$", unit+' ').trim();
 }
 
+export function formatBankNumericAmount(event, inputElement, maxDigits = 10) {
+  // Allow only numbers, backspace, and some navigation keys
+  if (
+    !(
+      (event.key >= "0" && event.key <= "9") ||
+      event.key === "Backspace" ||
+      event.key === "Delete" ||
+      event.key === "ArrowLeft" ||
+      event.key === "ArrowRight" ||
+      event.key === "Tab"
+    )
+  ) {
+    event.preventDefault();
+    return;
+  }
+  
+  // Handle number keys
+  if (event.key >= "0" && event.key <= "9") {
+    event.preventDefault();
+    
+    // Get current value without formatting
+    let value = inputElement.value.replace(/[^0-9]/g, "");
+    
+    // Check if adding another digit would exceed the maximum length
+    if (value.length >= maxDigits) {
+      return; // Do nothing if max length reached
+    }
+    
+    // Add new digit
+    value += event.key;
+    
+    // Format with 2 decimal places
+    let formatted = (parseInt(value, 10) / 100).toFixed(2);
+    
+    // Add thousand separators
+    formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    
+    // Update the input
+    inputElement.value = formatted;
+  }
+  
+  // Handle backspace
+  if (event.key === "Backspace") {
+    event.preventDefault();
+    
+    // Get current value without formatting
+    let value = inputElement.value.replace(/[^0-9,\.]/g, "").replace(/,/g, "").replace(/\./g, "");
+    
+    // Remove last digit
+    if (value.length > 1) {
+      value = value.slice(0, -1);
+    } else {
+      value = "0";
+    }
+    
+    // Format with 2 decimal places
+    let formatted = (parseInt(value, 10) / 100).toFixed(2);
+    
+    // Add thousand separators
+    formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    
+    // Update the input
+    inputElement.value = formatted;
+  }
+}
+
 /**
  * format address
  */
