@@ -253,7 +253,7 @@ const breadcrumbs = ref([
               prepend-inner-icon="bx-money"
               label="Total (RM)"
               placeholder="10.00"
-              @keydown="formatBankNumericAmount($event, $event.target)"
+              @keydown="e => record.amount = formatBankNumericAmount(e, e.target)"
               :error-messages="getValue(errorMessages, 'amount')"
               inputmode="numeric"
             />
