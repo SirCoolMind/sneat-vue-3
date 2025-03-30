@@ -213,7 +213,7 @@ const addItemRecord = () => {
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'type.id')"
+              :error="getValue(errorMessages, 'type.id', [])"
               prepend-inner-icon="bx-user"
               label="Type"
             ></FinanceTypeLookup>

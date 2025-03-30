@@ -205,7 +205,7 @@ const breadcrumbs = ref([
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'type.id')"
+              :error="getValue(errorMessages, 'type.id', [])"
               prepend-inner-icon="bx-category"
               label="Type"
             ></FinanceTypeLookup>
@@ -228,7 +228,7 @@ const breadcrumbs = ref([
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'money_account.id')"
+              :error="getValue(errorMessages, 'money_account.id', [])"
               prepend-inner-icon="bx-wallet-alt"
               label="Account"
             ></AccountTypeLookup>
@@ -280,7 +280,7 @@ const breadcrumbs = ref([
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'money_category.id')"
+              :error="getValue(errorMessages, 'money_category.id', [])"
               prepend-inner-icon="bx-dialpad"
               label="Category"
             ></CategoryLookup>
@@ -305,7 +305,7 @@ const breadcrumbs = ref([
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'money_subcategory.id')"
+              :error="getValue(errorMessages, 'money_subcategory.id', [])"
               prepend-inner-icon="bx-dialpad-alt"
               label="Sub-Category"
               :readonly="!canEdit()"

@@ -236,7 +236,7 @@ const breadcrumbs = ref([
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'kpop_era_id')"
+              :error="getValue(errorMessages, 'kpop_era_id', [])"
               prepend-inner-icon="bx-user"
               label="Era"
             ></KpopEraLookup>
@@ -260,7 +260,7 @@ const breadcrumbs = ref([
               :single-line="false"
               class="thin-border"
               :return-object="true"
-              :error="getValue(errorMessages, 'kpop_era_version_id')"
+              :error="getValue(errorMessages, 'kpop_era_version_id', [])"
               prepend-inner-icon="bx-user"
               label="Version"
               :readonly="!canEdit()"
