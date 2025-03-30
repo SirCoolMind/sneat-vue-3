@@ -136,69 +136,33 @@ export function formatMoney(value, unit = 'RM') {
 }
 
 export function formatBankNumericAmount(event, inputElement, maxDigits = 10) {
-  // Allow only numbers, backspace, and some navigation keys
-  if (
-    !(
-      (event.key >= "0" && event.key <= "9") ||
-      event.key === "Backspace" ||
-      event.key === "Delete" ||
-      event.key === "ArrowLeft" ||
-      event.key === "ArrowRight" ||
-      event.key === "Tab"
-    )
-  ) {
+  const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+
+  // Block any non-numeric input except allowed keys
+  if (!/^\d$/.test(event.key) && !allowedKeys.includes(event.key)) {
     event.preventDefault();
     return;
   }
-  
-  // Handle number keys
-  if (event.key >= "0" && event.key <= "9") {
-    event.preventDefault();
-    
-    // Get current value without formatting
-    let value = inputElement.value.replace(/[^0-9]/g, "");
-    
-    // Check if adding another digit would exceed the maximum length
-    if (value.length >= maxDigits) {
-      return; // Do nothing if max length reached
-    }
-    
-    // Add new digit
-    value += event.key;
-    
-    // Format with 2 decimal places
-    let formatted = (parseInt(value, 10) / 100).toFixed(2);
-    
-    // Add thousand separators
-    formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    
-    // Update the input
-    inputElement.value = formatted;
-  }
-  
-  // Handle backspace
+
+  event.preventDefault(); // Prevent default input behavior
+
+  let value = inputElement.value.replace(/\D/g, ""); // Remove all non-numeric characters
+
   if (event.key === "Backspace") {
-    event.preventDefault();
-    
-    // Get current value without formatting
-    let value = inputElement.value.replace(/[^0-9,\.]/g, "").replace(/,/g, "").replace(/\./g, "");
-    
-    // Remove last digit
-    if (value.length > 1) {
-      value = value.slice(0, -1);
-    } else {
-      value = "0";
-    }
-    
-    // Format with 2 decimal places
-    let formatted = (parseInt(value, 10) / 100).toFixed(2);
-    
-    // Add thousand separators
-    formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    
-    // Update the input
-    inputElement.value = formatted;
+    value = value.slice(0, -1); // Remove last digit
+  } else if (/^\d$/.test(event.key) && value.length < maxDigits) {
+    value += event.key; // Append new digit
   }
+
+  value = value || "0"; // Ensure at least "0"
+
+  // Convert to decimal format
+  let formatted = (parseInt(value, 10) / 100).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formatted;
 }
 
 /**
