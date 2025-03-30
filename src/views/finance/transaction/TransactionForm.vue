@@ -1,5 +1,5 @@
 <script setup>
-import { appendFormData, getValue, isNumericMoney, updateBreadcrumbTitle } from '@/utils/helpers';
+import { appendFormData, formatBankNumericAmount, getValue, updateBreadcrumbTitle } from '@/utils/helpers';
 import axios from 'axios';
 import Swal from 'sweetalert2-neutral';
 import { ref } from 'vue';
@@ -253,7 +253,7 @@ const breadcrumbs = ref([
               prepend-inner-icon="bx-money"
               label="Total (RM)"
               placeholder="10.00"
-              @keypress="isNumericMoney($event, record.amount)" 
+              @keydown="formatBankNumericAmount($event, $event.target)"
               :error-messages="getValue(errorMessages, 'amount')"
               inputmode="numeric"
             />
